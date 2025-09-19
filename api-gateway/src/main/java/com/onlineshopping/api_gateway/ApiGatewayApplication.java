@@ -1,4 +1,4 @@
-package com.onlineshopping.apigateway;
+package com.onlineshopping.api_gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

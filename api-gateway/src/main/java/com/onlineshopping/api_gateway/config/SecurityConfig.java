@@ -1,4 +1,4 @@
-package com.onlineshopping.apigateway.config;
+package com.onlineshopping.api_gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ public class SecurityConfig {
 
         return serverHttpSecurity.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
-                        .pathMatchers("/eureka/**")
+                        .pathMatchers("/eureka/**", "/actuator/**")
                         .permitAll()
                         .anyExchange()
                         .authenticated())
