@@ -6,6 +6,7 @@ import com.onlineshopping.order_service.dto.OrderRequest;
 import com.onlineshopping.order_service.model.Order;
 import com.onlineshopping.order_service.model.OrderLineItems;
 import com.onlineshopping.order_service.repository.OrderRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
 
+    @CircuitBreaker(name="inventory", fallbackMethod = "fallbackMethod1")
     public void placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
@@ -39,11 +41,11 @@ public class OrderService {
 
         // call inventory service to check if product is in stock or not
         InventoryResponse[] inventoryResponseArray = webClientBuilder.build().get()
-                        .uri("http://inventory-service//api/inventory",
-                                uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
-                                .retrieve()
-                                        .bodyToMono(InventoryResponse[].class)
-                                                .block();
+                .uri("http://inventory-service//api/inventory",
+                        uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
+                .retrieve()
+                .bodyToMono(InventoryResponse[].class)
+                .block();
 
         boolean allProductsInStock = Arrays.stream(inventoryResponseArray).allMatch(InventoryResponse::isInStock);
 
@@ -60,5 +62,9 @@ public class OrderService {
         orderLineItems.setPrice(orderLineItemsDto.getPrice());
         orderLineItems.setQuantity(orderLineItemsDto.getQuantity());
         return orderLineItems;
+    }
+
+    public void fallbackMethod1(OrderRequest orderRequest, RuntimeException runtimeException) throws Exception {
+        throw new Exception("Oops! Something went wrong, Please place order after some time!");
     }
 }

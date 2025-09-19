@@ -1,4 +1,4 @@
-package com.onlineshopping.discovery_server;
+package com.onlineshopping.discovery_server.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
