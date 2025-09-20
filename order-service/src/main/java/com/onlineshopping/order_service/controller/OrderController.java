@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/order")
@@ -15,8 +17,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String placeOrder(@RequestBody OrderRequest orderRequest) {
-        orderService.placeOrder(orderRequest);
-        return "order placed successfully";
+    public CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+        return orderService.placeOrder(orderRequest);
     }
 }
