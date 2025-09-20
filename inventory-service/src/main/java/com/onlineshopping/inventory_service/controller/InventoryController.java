@@ -3,6 +3,7 @@ package com.onlineshopping.inventory_service.controller;
 import com.onlineshopping.inventory_service.dto.InventoryResponse;
 import com.onlineshopping.inventory_service.service.InventoryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/inventory")
 public class InventoryController {
 
