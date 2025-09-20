@@ -9,6 +9,8 @@ import com.onlineshopping.order_service.repository.OrderRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+    private final Tracer tracer;
+
 
     @CircuitBreaker(name="inventory", fallbackMethod = "fallbackMethod1")
     @TimeLimiter(name = "inventory", fallbackMethod = "fallbackMethod1")
@@ -44,25 +48,30 @@ public class OrderService {
         List<String> skuCodes = order.getOrderLineItemsList().stream()
                 .map(OrderLineItems::getSkuCode).toList();
 
-        // call inventory service to check if product is in stock or not
-        return CompletableFuture.supplyAsync(() -> {
+        Span newSpan = this.tracer.nextSpan().name("my-custom-span").start();
+        try (Tracer.SpanInScope ws = this.tracer.withSpan(newSpan.start())) {
             // call inventory service to check if product is in stock or not
-            InventoryResponse[] inventoryResponseArray = webClientBuilder.build().get()
-                    .uri("http://inventory-service//api/inventory",
-                            uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
-                    .retrieve()
-                    .bodyToMono(InventoryResponse[].class)
-                    .block(); // Blocking call must be inside the supplyAsync lambda
+            return CompletableFuture.supplyAsync(() -> {
+                // call inventory service to check if product is in stock or not
+                InventoryResponse[] inventoryResponseArray = webClientBuilder.build().get()
+                        .uri("http://inventory-service//api/inventory",
+                                uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
+                        .retrieve()
+                        .bodyToMono(InventoryResponse[].class)
+                        .block(); // Blocking call must be inside the supplyAsync lambda
 
-            boolean allProductsInStock = Arrays.stream(inventoryResponseArray).allMatch(InventoryResponse::isInStock);
+                boolean allProductsInStock = Arrays.stream(inventoryResponseArray).allMatch(InventoryResponse::isInStock);
 
-            if (!allProductsInStock) {
-                throw new IllegalArgumentException("Product is not in stock. Please try again later.");
-            } else {
-                orderRepository.save(order);
-                return "order placed successfully";
-            }
-        });
+                if (!allProductsInStock) {
+                    throw new IllegalArgumentException("Product is not in stock. Please try again later.");
+                } else {
+                    orderRepository.save(order);
+                    return "order placed successfully";
+                }
+            });
+        } finally {
+            newSpan.end();
+        }
     }
 
     private OrderLineItems mapToDto(OrderLineItemsDto orderLineItemsDto) {
