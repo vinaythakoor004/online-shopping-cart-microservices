@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "name": "Deep cleaning",
+    "description": "Thorough cleaning in every nook and cranny of your home.",
+    "price": "100$",
+    "time": "2 hours",
+    "servicedescription": "Deep cleaning is a comprehensive cleaning service that goes beyond the surface. It includes detailed cleaning of all areas, ensuring your home is spotless and sanitized.",
+    "contactDetails": "New York, NY, USA",
+    "image": "deep_cleaning.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Furniture Cleaning",
+    "description":
+      "Ensuring your furniture is refreshed, sanitized, and looks as good as new.",
+    "price": "150$",
+    "time": "3 hours",
+    "servicedescription": "Furniture cleaning involves the thorough cleaning of all types of furniture, including upholstery and hard surfaces. We use specialized products to ensure your furniture is not only clean but also protected.",
+    "contactDetails": "San Francisco, CA, USA",
+    "image": "furniture_cleaning.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Kitchen Cleaning",
+    "description": "Leaving your kitchen spotless and hygienic.",
+    "price": "300$",
+    "time": "1.5 hours",
+    "servicedescription": "Kitchen cleaning focuses on sanitizing all surfaces, appliances, and fixtures in your kitchen. We ensure that your cooking space is not only clean but also safe for food preparation.",
+    "contactDetails": "Los Angeles, CA, USA",
+    "image": "kitchen_cleaning.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Move In/Move Out",
+    "description": "Hassle-free cleaning for a smooth transition.",
+    "price": "100$",
+    "time": "4 hours",
+    "servicedescription": "Move In/Move Out cleaning is designed for those moving into or out of a property. It includes a thorough cleaning of all areas to ensure the space is ready for new occupants.",
+    "contactDetails": "Chicago, IL, USA",
+    "image": "move_in_out.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Laundry",
+    "description":
+      "Washing, folding and ironing, providing you with neatly pressed clothes.",
+    "price": "50$",
+    "time": "2 hours",
+    "servicedescription": "Laundry service includes washing, drying, folding, and ironing your clothes. We ensure that your garments are treated with care and returned to you in pristine condition.",
+    "contactDetails": "Miami, FL, USA",
+    "image": "laundry.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Window Cleaning",
+    "description":
+      "Crystal-clear results, enhancing natural light and a sparkling view.",
+    "price": "100$",
+    "time": "1 hour",
+    "servicedescription": "Window cleaning involves the thorough cleaning of all glass surfaces, ensuring a streak-free shine. We use specialized tools and eco-friendly products to achieve the best results.",
+    "contactDetails": "Seattle, WA, USA",
+    "image": "window_cleaning.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Office Cleaning",
+    "description":
+      "Tailored to maintain a clean workspace, promoting a productive environment.",
+    "price": "200$",
+    "time": "5 hours",
+    "servicedescription": "Office cleaning is designed to keep your workplace clean and organized. We offer flexible scheduling to minimize disruption to your business operations.",
+    "contactDetails": "Boston, MA, USA",
+    "image": "office_cleaning.jpg"
+  }
+]
