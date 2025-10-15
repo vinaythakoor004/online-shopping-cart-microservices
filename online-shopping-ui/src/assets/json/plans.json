@@ -1,0 +1,17 @@
+[
+    {
+        "name": "The Weekly Plan",
+        "price": "$490",
+        "period": "Every month"
+    },
+    {
+        "name": "The Bi-Monthly Plan",
+        "price": "$290",
+        "period": "Every month"
+    },
+    {
+        "name": "The Office Plan",
+        "price": "$950",
+        "period": "Every month"
+    }
+]

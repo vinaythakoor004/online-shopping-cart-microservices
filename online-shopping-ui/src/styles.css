@@ -1,1 +1,130 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'OpenSans-Bold';
+  src: url('assets/fonts/OpenSans-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: bold;
+}
+
+@font-face {
+  font-family: 'OpenSans-light';
+  src: url('assets/fonts/OpenSans-Light.ttf') format('truetype');
+  font-weight: light;
+  font-style: light;
+}
+
+@font-face {
+  font-family: 'OpenSans-medium';
+  src: url('assets/fonts/OpenSans-Medium.ttf') format('truetype');
+  font-weight: medium;
+  font-style: medium;
+}
+
+
+@font-face {
+  font-family: 'OpenSans-regular';
+  src: url('assets/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: 400;
+}
+
+@font-face {
+  font-family: 'OpenSans-semibold';
+  src: url('assets/fonts/OpenSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: 600;
+}
+
+.openSansBold {
+  font-family: 'OpenSans-Bold';
+  font-weight: bold;
+}
+
+.openSansLight {
+  font-family: 'OpenSans-light';
+  font-weight: light;
+}
+.openSansMedium {
+  font-family: 'OpenSans-medium';
+  font-weight: medium;
+}
+.openSansRegular {
+  font-family: 'OpenSans-regular';
+  font-weight: 400;
+}
+.openSansSemiBold {
+  font-family: 'OpenSans-semibold';
+  font-weight: 600;
+}
+
+.navbarClass {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navbarClass .nav-link {
+  color: white !important;
+  text-decoration: none;
+}
+
+.paginationClass {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+  /* margin-bottom: 15rem; */
+}
+
+.main-content {
+  flex: 1;
+  /* margin-top: 6rem; */
+}
+
+.page-container {
+  /* position: relative; */
+  /* min-height: 100vh; */
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%
+}
+
+.footer {
+  /* position: absolute; */
+  bottom: 0;
+  width: 100%;
+  /* height: 2.5rem; */
+}
+
+.alertClass {
+  margin-top: 4rem !important;
+}
+
+.aboutPageCss {
+  background: papayawhip;
+}
+
+.pageCss {
+  background: #fcfbf7;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.spinnerDiv {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  position: fixed; /* Positions relative to the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Use RGBA for the background color's transparency */
+  background-color: rgba(255, 255, 255, 0.6); /* White background, 60% opacity */
+  /* Or for a darker, more prominent overlay */
+  /* background-color: rgba(0, 0, 0, 0.4); */ /* Black background, 40% opacity */
+  z-index: 9999; /* Ensures it's on top of other content */
+}

@@ -1,1 +1,83 @@
-Hello
+<div class="page-container pageCss">
+    <!-- [ngClass]="{ aboutPageCss: currentRoute == '/about' || currentRoute == '/services' }" -->
+    <header *ngIf="isLoggedIn()" #navbar class="nav navbarClass fixed-top bg-dark">
+        <a #home class="nav-link" aria-current="page" routerLink="home" [routerLinkActive]="['activeClass']"
+            (click)="navigatePage($event, 'home')">Home</a>
+        <a #services class="nav-link" routerLink="services" [routerLinkActive]="['activeClass']"
+            (click)="navigatePage($event, 'services')">Services</a>
+        <a #plans class="nav-link" routerLink="plans" [routerLinkActive]="['activeClass']"
+            (click)="navigatePage($event, 'plans')">Plans</a>
+        <a #contact class="nav-link" routerLink="contact" [routerLinkActive]="['activeClass']"
+            (click)="navigatePage($event, 'contact')">Contact</a>
+        <a #about class="nav-link" routerLink="about" [routerLinkActive]="['activeClass']"
+            (click)="navigatePage($event, 'about')">About</a>
+        <!-- <a #about class="nav-link" routerLink="ex" [routerLinkActive]="['activeClass']"
+            (click)="navigatePage($event, 'ex')">ex</a> -->
+
+        <!-- <a ></a> -->
+      <button class="account_icon nav-link" [matBadge]="notifications.length || 0" matBadgeColor="warn"  [routerLinkActive]="['activeClass']" popovertarget="mydiv"><mat-icon class="img-responsive aboutImg" popovertarget="mydiv">account_circle</mat-icon></button>
+        <a #about *ngIf="!isLoggedIn()" class="nav-link" routerLink="login" [routerLinkActive]="['activeClass']"
+            (click)="navigatePage($event, 'login')">Log In</a>
+    </header>
+    <main class="main-content">
+        <app-loader></app-loader>
+        <router-outlet />
+    </main>
+
+    <footer *ngIf="isLoggedIn()" #navbar class="bd-footer footer nav navbarClass bg-dark p-0 mt-2">
+        <div class="row w-100 m-auto mt-3 footerClass">
+            <div class="col-3">
+                <span class="openSansRegular fs-4">The cleanic</span>
+                <div class="mt-2">Follow us on
+                    <img class="img-responsive followImg" src="assets/img/instagram.svg">
+                    <img class="img-responsive followImg" src="assets/img/facebook.svg">
+                    <img class="img-responsive followImg" src="assets/img/youtube.svg">
+                    <img class="img-responsive followImg" src="assets/img/whatsapp.svg">
+                </div>
+            </div>
+            <div class="col-3 d-grid">
+                <span class="fs-5">Leagal</span><br/>
+                <span>Privacy Policy</span>
+                <span>Terms and Conditions</span>
+                <span>Refund Policy</span>
+            </div>
+            <div class="col-3">
+                <span class="fs-5">Opening Hours</span><br/><br/>
+                <span>Mon - Fri 11 am - 8 pm</span><br/>
+                <span>Sat 11 am - 6 pm</span>
+            </div>
+            <div class="col-3">
+                <span class="fs-5">Contact</span><br/><br/>
+                <span>121 Rock Sreet, 21 Avenue, New York, NY 92103-9000</span>
+            </div>
+        </div>
+        <span class="m-auto mt-3 mb-3">&copy; {{ "footerText" | translate}}</span>
+    </footer>
+</div>
+
+<div popover id="mydiv" class="border border-dark">
+    <div class="popover-arrow-wrapper">
+        <div class="popover-arrow"></div>
+    </div>
+    <button class="closeBtn" popovertarget="mydiv" popovertargetaction="hide"><img class="img-responsive closeImg" src="assets/img/close.svg"></button><br/>
+    <div *ngIf="loginUserDetails" class="p-2">
+        <span class="openSansRegular">Name: {{ loginUserDetails?.name }}</span><br/>
+        <span class="openSansRegular">Email: {{ loginUserDetails?.email }}</span><br/>
+        <!-- <span class="openSansRegular">Role: {{ loginUserDetails.role }}</span><br/> -->
+        <button class="closeBtn" popovertarget="mydiv" popovertargetaction="hide"><img class="img-responsive mt-2 logoutBtn" title="Logout" src="assets/img/logout.svg" (click)="logoutUser()">
+        </button><br/>
+    </div>
+     <hr />
+
+  <div class="notifications-section">
+    <div class="notification-title">Booking Notifications</div>
+
+    <div *ngIf="notifications.length === 0" class="no-notifications">
+      No new bookings
+    </div>
+
+    <div *ngFor="let note of notifications; let i = index" class="notification-item">
+      <span class="truncate-text" [title]="note">{{ note }}</span><button class="closeBtn" (click)="removeNotification(i)"><img class="closeMsg" src="assets/img/close.svg"></button>
+    </div>
+  </div>
+  </div>
