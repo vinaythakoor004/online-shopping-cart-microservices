@@ -1,0 +1,94 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres-order
+  name: postgres-order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-order
+  template:
+    metadata:
+      labels:
+        app: postgres-order
+    spec:
+      containers:
+        - image: postgres:latest
+          name: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: postgres-secrets
+          volumeMounts:
+            - mountPath: /var/lib/postgresql
+              name: order-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: postgres-order-initdb-config
+      volumes:
+        - name: order-data
+          persistentVolumeClaim:
+            claimName: postgres-order-pvc
+        - name: postgres-order-initdb-config
+          configMap:
+            name: postgres-order-initdb-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgres-order
+  name: postgres-order-service
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    app: postgres-order
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-order-pv
+spec:
+  storageClassName: "standard"
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /tmp/order-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-order-pvc
+spec:
+  storageClassName: "standard"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secrets
+data:
+  POSTGRES_PASSWORD: cGFzc3dvcmQ=
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-order-initdb-config
+data:
+  initdb.sql: |
+    CREATE DATABASE order-service;
