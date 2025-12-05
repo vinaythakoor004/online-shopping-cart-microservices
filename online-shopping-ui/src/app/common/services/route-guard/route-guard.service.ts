@@ -1,40 +1,49 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Route, Router, RouterStateSnapshot } from '@angular/router';
-import { finalize, map, Observable, of } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { LoaderService } from '../loader/loader.service';
+import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class RouteGuardService implements CanActivate {
+const isAccessAllowed = async (
+  route: ActivatedRouteSnapshot,
+  _: RouterStateSnapshot,
+  authData: AuthGuardData
+): Promise<boolean | UrlTree> => {
 
-  constructor(private router: Router, private loaderService: LoaderService, private authService: AuthService ) { }
+  const { authenticated, grantedRoles } = authData;
+  const requiredRole = route.data['role'];
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> {
-    // The guard calls checkAuthStatus; the service internally decides if it needs a BE call or uses cache.
-    this.loaderService.show();
-    return this.authService.checkAuthStatus().pipe(
-      map(response => {
-        return true;
-        // if (response.isAuthenticated) {
-        //   return true;
-        // } else {
-        //   this.router.navigate(['/login']);
-        //   return false;
-        // }
-      }),
-      finalize(() => {
-        this.loaderService.hide();
-      })
-    );
+  if (!requiredRole) return false;
+
+  const hasRequiredRole = (role: string): boolean =>
+    Object.values(grantedRoles.resourceRoles)
+      .some((roles) => roles.includes(role));
+
+  if (authenticated && hasRequiredRole(requiredRole)) {
+    return true;
   }
 
+  const router = inject(Router);
+  return router.parseUrl('/forbidden');
+};
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.canActivate(route, state);
-  }
-}
+const keycloakAuthGuard = createAuthGuard(isAccessAllowed);
+
+export const loaderKeycloakGuard = ((
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  const loaderService = inject(LoaderService);
+  const router = inject(Router);
+  loaderService.show();
+  const guardResult = keycloakAuthGuard(route, state);
+  return Promise.resolve(guardResult)
+    .then((result) => {
+      loaderService.hide();
+      return result;
+    })
+    .catch((error) => {
+      console.error('Keycloak Guard failed:', error);
+      loaderService.hide();
+      return router.parseUrl('/login');
+    });
+}) as CanActivateFn;
