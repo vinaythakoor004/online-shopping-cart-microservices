@@ -35,14 +35,14 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-     this.webSocketService.onMessage().subscribe((msg: string) => {
-      this.notifications.unshift(msg); // Add new message on top
-    });
-    this.authService.authenticatedUser$.subscribe({
-      next: (resp) => {
-        this.loginUserDetails = resp;
-      }
-    })
+    //  this.webSocketService.onMessage().subscribe((msg: string) => {
+    //   this.notifications.unshift(msg); // Add new message on top
+    // });
+    // this.authService.authenticatedUser$.subscribe({
+    //   next: (resp) => {
+    //     this.loginUserDetails = resp;
+    //   }
+    // })
   }
 
   ngDoCheck() {

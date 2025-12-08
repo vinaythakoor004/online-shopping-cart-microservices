@@ -1,0 +1,12 @@
+.homeContainer {
+  margin-top: 5rem;
+}
+
+.alignImages {
+  display: flex;
+  justify-content: center;
+}
+
+.carouselImgDiv {
+  display: contents;
+}
