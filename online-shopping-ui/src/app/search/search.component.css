@@ -1,0 +1,14 @@
+.searchBox {
+    width: 40rem;
+    margin: auto;
+    /* margin-top: 6rem; */
+}
+
+.searchBox input {
+    outline: none;
+    box-shadow: none
+}
+
+.searchBox input[type=text]:focus {
+    border: 1px solid gray;
+}

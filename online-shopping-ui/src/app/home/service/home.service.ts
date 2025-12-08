@@ -13,4 +13,8 @@ export class HomeService {
     getProductData(): Observable<any> {
       return this.http.get(this.apiUrl);
     }
+
+    saveProductData(data: any): Observable<any> {
+      return this.http.post(this.apiUrl, data);
+    }
 }
