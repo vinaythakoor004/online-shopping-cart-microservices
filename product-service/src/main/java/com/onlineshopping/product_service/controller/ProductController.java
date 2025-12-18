@@ -6,6 +6,7 @@ import com.onlineshopping.product_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,10 +17,13 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping()
+    @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(ProductRequest productRequest) {
-        productService.createProduct(productRequest);
+    public void createProduct(
+            @RequestPart("product") ProductRequest productRequest,
+            @RequestPart("file") MultipartFile file) throws Exception {
+
+        productService.createProduct(productRequest, file);
     }
 
     @GetMapping

@@ -31,3 +31,36 @@
 .productForm textarea[type=text]:focus {
     border: 1px solid gray;
 }
+
+.product-btn-col {
+  display: grid;
+  grid-auto-flow: column;
+  align-content: space-around;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.product-image {
+  width: 15rem;
+  display: block;
+  margin: auto;
+}
+
+.product-desc {
+  display: grid;
+  align-content: center;
+  gap: 2rem;
+}
+
+.product-btn-icons {
+  width: 3rem;
+}
+
+.product-row {
+  width: 100%;
+  padding: 0rem 10rem;
+}
+
+.product-list-title {
+  padding: 2rem 4rem;
+}

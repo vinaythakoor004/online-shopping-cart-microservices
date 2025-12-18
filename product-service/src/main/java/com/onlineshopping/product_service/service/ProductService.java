@@ -7,6 +7,7 @@ import com.onlineshopping.product_service.model.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,13 +17,16 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final MinioFileService minioFileService;
+    public void createProduct(ProductRequest productRequest, MultipartFile file) throws Exception {
+        String imageUrl = minioFileService.uploadFile(file);
 
-    public void createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
                 .skuCode(productRequest.getSkuCode())
                 .price(productRequest.getPrice())
+                .imageUrl(imageUrl)
                 .build();
 
         productRepository.save(product);
@@ -32,9 +36,11 @@ public class ProductService {
 
     public List<ProductResponse> getAllProducts() {
         List<Product> productList = productRepository.findAll();
-        return productList.stream()
+        List<ProductResponse> productResponse = productList.stream()
                 .map(this::mapToProductresponse)
                 .toList();
+        System.out.println(productResponse.toString());
+        return productResponse;
     }
 
     private ProductResponse mapToProductresponse(Product product) {
@@ -44,6 +50,7 @@ public class ProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .skuCode(product.getSkuCode())
+                .imageUrl(product.getImageUrl())
                 .build();
     }
 }
