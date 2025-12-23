@@ -128,3 +128,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   /* background-color: rgba(0, 0, 0, 0.4); */ /* Black background, 40% opacity */
   z-index: 9999; /* Ensures it's on top of other content */
 }
+
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: white !important;
+}

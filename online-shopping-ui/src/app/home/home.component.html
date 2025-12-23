@@ -27,5 +27,23 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
+
+</div>
+
+<div class="row product-container g-4">
+  @for (product of productList; track $index) {
+    <div class="col-3">
+      <mat-card class="product-card" appearance="outlined">
+        <mat-card-header class="header-class">
+          <mat-card-title>{{ product.name}}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" class="product-image">
+        <mat-card-content>
+          <!-- <p>{{ product.description }}</p><br /> -->
+          <p class="m-auto">{{ product.price }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
 </div>
 </div>

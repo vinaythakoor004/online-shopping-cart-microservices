@@ -17,4 +17,12 @@ export class HomeService {
     saveProductData(data: any): Observable<any> {
       return this.http.post(this.apiUrl, data);
     }
+
+    updateProductDetails(productId: string, data: any): Observable<any> {
+      return this.http.put(`${this.apiUrl}/${productId}`, data);
+    }
+
+    deleteProduct(productId: string): Observable<any> {
+      return this.http.delete(`${this.apiUrl}/${productId}`);
+    }
 }

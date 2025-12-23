@@ -10,3 +10,26 @@
 .carouselImgDiv {
   display: contents;
 }
+
+.product-container {
+  /* justify-content: space-evenly; */
+}
+
+.product-card {
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-image {
+  width: fit-content;
+  object-fit: cover;
+  margin: auto;
+  padding: 1rem;
+}
+
+.header-class {
+  justify-content: center;
+  padding: 1rem;
+}
