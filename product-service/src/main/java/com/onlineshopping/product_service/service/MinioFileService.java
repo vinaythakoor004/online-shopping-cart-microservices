@@ -1,10 +1,8 @@
 package com.onlineshopping.product_service.service;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +11,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MinioFileService {
 
     private final MinioClient minioClient;
@@ -42,5 +41,21 @@ public class MinioFileService {
         );
 
         return "http://localhost:9000/" + bucketName + "/" + fileName;
+    }
+
+    public void deleteFile(String imageUrl) {
+        try {
+            String objectName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(objectName)
+                            .build()
+            );
+
+        } catch (Exception e) {
+            log.error("Failed to delete image from MinIO", e);
+        }
     }
 }
