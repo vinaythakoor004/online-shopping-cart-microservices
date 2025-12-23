@@ -1,0 +1,48 @@
+<h1>Add Product: </h1>
+<form [formGroup]="productsForm" class="productForm" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="productName" class="form-label openSansRegular">{{ "productNameRequired" | translate }}</label>
+    <input type="text" class="form-control" autocomplete="off" id="productName" formControlName="name">
+    @if (productsForm.get('name')?.invalid && productsForm.get('name')?.touched) {
+      <div class="form-text errorMsg">
+          {{ "productNameIsRequired" | translate }}
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="productDescription" class="form-label openSansRegular">{{ "productDescriptionRequired" | translate }}</label>
+    <input type="text" class="form-control" autocomplete="off" id="productDescription" formControlName="description">
+    @if (productsForm.get('description')?.invalid && productsForm.get('description')?.touched) {
+      <div class="form-text errorMsg">
+          {{ "productDescriptionIsRequired" | translate }}
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="productSkuCode" class="form-label openSansRegular">{{ "productSkuCodeRequired" | translate }}</label>
+    <input type="text" class="form-control" autocomplete="off" id="productSkuCode" formControlName="skuCode">
+    @if (productsForm.get('skuCode')?.invalid && productsForm.get('skuCode')?.touched) {
+      <div class="form-text errorMsg">
+          {{ "productSkuCodeIsRequired" | translate }}
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="productPrice" class="form-label openSansRegular">{{ "productPriceRequired" | translate }}</label>
+    <input type="text" class="form-control" autocomplete="off" id="productPrice" formControlName="price">
+    @if (productsForm.get('price')?.invalid && productsForm.get('price')?.touched) {
+      <div class="form-text errorMsg">
+          {{ "productPriceIsRequired" | translate }}
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="formFile" class="form-label">Upload product image</label>
+    <input class="form-control" type="file" accept="image/*" id="formImageFile" (change)="onFileChanged($event)">
+  </div>
+  <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>
+</form>

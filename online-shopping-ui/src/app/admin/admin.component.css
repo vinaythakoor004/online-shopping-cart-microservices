@@ -54,6 +54,7 @@
 
 .product-btn-icons {
   width: 3rem;
+  cursor: pointer;
 }
 
 .product-row {
