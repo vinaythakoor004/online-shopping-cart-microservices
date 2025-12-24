@@ -1,23 +1,31 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { HomeService } from '../../home/service/home.service';
 import { AlertService } from '../../common/services/alert/alert.service';
+import { Product } from '../../common/model/product.model';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { LoaderService } from '../../common/services/loader/loader.service';
 
 @Component({
   selector: 'app-add-product',
-  imports: [ReactiveFormsModule, CommonModule, TranslatePipe],
+  imports: [ReactiveFormsModule, CommonModule, TranslatePipe, MatDialogModule],
   templateUrl: './add-product.component.html',
   styleUrl: './add-product.component.css',
 })
-export class AddProductComponent {
+export class AddProductComponent implements OnInit   {
+  dialogRef = inject(MatDialogRef<AddProductComponent>, { optional: true });
+  readonly data = inject<Product | null>(MAT_DIALOG_DATA, { optional: true });
   @Output() productAdded = new EventEmitter<void>();
+  isEditDialog = computed(() => !!this.dialogRef);
+
   productsForm: FormGroup;
   selectedFile: File | null = null;
+  fileName: string | null = null;
 
   constructor(private fb: FormBuilder, private homeService: HomeService,
-    private alertService: AlertService) {
+    private alertService: AlertService, private loaderService: LoaderService) {
     this.productsForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -26,14 +34,34 @@ export class AddProductComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.productsForm.patchValue({
+      name: this.data?.name || '',
+      description: this.data?.description || '',
+      skuCode: this.data?.skuCode || '',
+      price: this.data?.price || ''
+    });
+
+    if (this.data) {
+      this.fileName = this.data.name;
+    }
+  }
+
   onFileChanged(event: any) {
     this.selectedFile = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
+
+    if (file) {
+      this.selectedFile = file;
+      this.fileName = file.name;
+    }
   }
 
   onSubmit(): void {
     if (this.productsForm.valid) {
 
-      if (!this.selectedFile) {
+      if (!this.selectedFile && !this.isEditDialog()) {
         alert("Please select an image file");
         return;
       }
@@ -46,22 +74,49 @@ export class AddProductComponent {
         new Blob([productJson], { type: "application/json" })
       );
 
-      formData.append("file", this.selectedFile);
+      if (this.selectedFile) {
+        formData.append("file", this.selectedFile);
+      }
 
-      this.homeService.saveProductData(formData).subscribe({
-        next: (data) => {
-          this.alertService.openSnackBar('Data saved successfully!');
-          console.log(data);
-          this.productAdded.emit(data);
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      })
-      this.productsForm.reset();
+      this.loaderService.show();
+      if (this.isEditDialog() && this.data) {
+        this.updateProduct(this.data.id!, formData);
+      } else {
+        this.addProduct(formData);
+      }
     } else {
       console.log('Form is invalid.');
     }
   }
 
+  addProduct(formData: FormData): void {
+    this.homeService.addProductDetails(formData).subscribe({
+      next: (data) => {
+        this.alertService.openSnackBar('Product data added successfully!');
+        this.productAdded.emit(data);
+        this.loaderService.hide();
+        this.productsForm.reset();
+      },
+      error: (err) => {
+        this.loaderService.hide();
+        console.log(err);
+      }
+    })
+  }
+
+  updateProduct(productId: string, formData: FormData): void {
+    this.homeService.updateProductDetails(productId, formData).subscribe({
+      next: (data) => {
+        this.alertService.openSnackBar('Product data updated successfully!');
+        this.dialogRef?.close();
+        this.loaderService.hide();
+        this.productAdded.emit(data);
+        this.productsForm.reset();
+      },
+      error: (err) => {
+        this.loaderService.hide();
+        console.log(err);
+      }
+    })
+  }
 }

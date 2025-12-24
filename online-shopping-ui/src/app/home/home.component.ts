@@ -4,6 +4,7 @@ import { HomeService } from './service/home.service';
 import { CommonModule } from '@angular/common';
 import { Product } from '../common/model/product.model';
 import {MatCardModule} from '@angular/material/card';
+import { LoaderService } from '../common/services/loader/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -14,15 +15,18 @@ import {MatCardModule} from '@angular/material/card';
 export class HomeComponent implements OnInit {
   isLoading: boolean = false;
   productList: Array<Product> = [];
-  constructor(private homeService: HomeService) { }
+  constructor(private homeService: HomeService, private loaderService: LoaderService) { }
 
   ngOnInit(): void {
+    this.loaderService.show();
     this.homeService.getProductData().subscribe({
       next: (data: Array<Product>) => {
+        this.loaderService.hide();
         this.productList = data;
         console.log(data);
       },
       error: (err) => {
+        this.loaderService.hide();
         console.log(err);
       }
     })

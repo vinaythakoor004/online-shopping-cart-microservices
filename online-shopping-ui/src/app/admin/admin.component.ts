@@ -7,6 +7,8 @@ import { Product } from '../common/model/product.model';
 import { AddProductComponent } from "./add-product/add-product.component";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { LoaderService } from '../common/services/loader/loader.service';
+import { PopupService } from '../common/services/popup/popup.service';
 
 export interface adminTab {
   label: string;
@@ -20,20 +22,25 @@ export interface adminTab {
   styleUrl: './admin.component.css'
 })
 export class AdminComponent implements OnInit {
+  readonly dialog = inject(MatDialog);
   productList: Array<Product> = [];
 
-  constructor(private homeService: HomeService, private alertService: AlertService) {}
+  constructor(private homeService: HomeService, private alertService: AlertService,
+    private loaderService: LoaderService, private popupService: PopupService) {}
 
   ngOnInit(): void {
     this.getProducts();
   }
 
   getProducts(): void {
+    this.loaderService.show();
     this.homeService.getProductData().subscribe({
       next: (data: Array<Product>) => {
-        this.productList = data;
+        this.loaderService.hide();
+        this.productList = [...data];
       },
       error: (err) => {
+        this.loaderService.hide();
         console.log(err);
       }
     })
@@ -43,19 +50,32 @@ export class AdminComponent implements OnInit {
     this.getProducts();
   }
 
+  deleteProductRow(product: Product): void {
+    const data = {
+      isDelete: true,
+      isConfirmDialog: true,
+      selectdItem: product
+    }
+    this.popupService.openDialog(data, '30rem', 'custom-dialog-container', () => {
+      this.deleteProduct(product.id);
+    });
+   }
+
   deleteProduct(productId: string): void {
+    this.loaderService.show();
     this.homeService.deleteProduct(productId).subscribe({
       next: (data) => {
+        this.loaderService.hide();
         this.alertService.openSnackBar('Product deleted successfully!');
-        console.log(data);
+        this.getProducts();
       },
       error: (err) => {
+        this.loaderService.hide();
         console.log(err);
       }
     })
   }
 
-  readonly dialog = inject(MatDialog);
 
   upateProduct(product: Product): void {
     const dialogRef = this.dialog.open(AddProductComponent, {
@@ -63,11 +83,14 @@ export class AdminComponent implements OnInit {
       width: '60vw',
       height: '39rem',
       maxWidth: '100vw',
-      data: { product: product }
+      data: product,
+      disableClose: true,
+      enterAnimationDuration: '100',
+      exitAnimationDuration: '100',
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.getProducts();
     });
   }
 }

@@ -40,7 +40,7 @@
         <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" class="product-image">
         <mat-card-content>
           <!-- <p>{{ product.description }}</p><br /> -->
-          <p class="m-auto">{{ product.price }}</p>
+          <p class="text-center">{{ product.price | currency: 'INR' }}</p>
         </mat-card-content>
       </mat-card>
     </div>

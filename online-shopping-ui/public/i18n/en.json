@@ -7,5 +7,7 @@
   "productSkuCodeIsRequired": "Product skuCode is required.",
   "productPriceRequired": "Product price (required): ",
   "productPriceIsRequired": "Product price is required.",
-  "submit": "Submit"
+  "submit": "Submit",
+  "confirmDelete": "Are you sure you want to delete row:",
+  "confirmEdit": "Are you sure you want to edit row:"
 }

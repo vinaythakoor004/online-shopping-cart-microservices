@@ -41,7 +41,7 @@
 }
 
 .product-image {
-  width: 15rem;
+  width: 7rem;
   display: block;
   margin: auto;
 }
@@ -59,7 +59,6 @@
 
 .product-row {
   width: 100%;
-  padding: 0rem 10rem;
 }
 
 .product-list-title {
