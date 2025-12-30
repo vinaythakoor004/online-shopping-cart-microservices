@@ -6,6 +6,7 @@ import com.onlineshopping.product_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,11 +22,11 @@ public class ProductController {
 
     @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(
+    public ProductResponse createProduct(
             @RequestPart("product") ProductRequest productRequest,
             @RequestPart("file") MultipartFile file) throws Exception {
 
-        productService.createProduct(productRequest, file);
+        return productService.createProduct(productRequest, file);
     }
 
     @PutMapping(
@@ -54,4 +55,12 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
+    @PostMapping("/bulk")
+    public ResponseEntity<List<ProductResponse>> bulkProductUpload(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("imagesZip") MultipartFile imagesZip
+    ) throws Exception {
+        List<ProductResponse> response = productService.bulkSave(file, imagesZip);
+        return ResponseEntity.ok(response);
+    }
 }

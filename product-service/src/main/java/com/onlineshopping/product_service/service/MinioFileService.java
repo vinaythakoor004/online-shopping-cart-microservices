@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.UUID;
 
 @Service
@@ -19,9 +21,7 @@ public class MinioFileService {
     @Value("${minio.bucket.name}")
     private String bucketName;
 
-    public String uploadFile(MultipartFile file) throws Exception {
-
-        String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+    public String uploadFile(String objectName, InputStream inputStream, long size, String contentType) throws Exception {
 
         boolean found = minioClient.bucketExists(
                 BucketExistsArgs.builder().bucket(bucketName).build()
@@ -34,13 +34,13 @@ public class MinioFileService {
         minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(bucketName)
-                        .object(fileName)
-                        .stream(file.getInputStream(), file.getSize(), -1)
-                        .contentType(file.getContentType())
+                        .object(objectName)
+                        .stream(inputStream, size, -1)
+                        .contentType(contentType)
                         .build()
         );
 
-        return "http://localhost:9000/" + bucketName + "/" + fileName;
+        return "http://localhost:9000/" + bucketName + "/" + objectName;
     }
 
     public void deleteFile(String imageUrl) {

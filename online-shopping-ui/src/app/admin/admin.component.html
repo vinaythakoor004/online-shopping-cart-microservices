@@ -2,20 +2,20 @@
   <mat-tab-group class="custom-tabs">
       <mat-tab label="Dashboard" class="tabDiv" style="color: red;">
       <h1 class="product-list-title">Product List:</h1><hr>
-      @for (product of productList; track $index) {
+      @for (product of productList; track product.id) {
         <div class="row w-100 product-row">
-          <div class="col-4"><img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" class="product-image"></div>
-          <div class="col-6 product-desc">
+          <div class="col-2 m-auto"><img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" class="product-image"></div>
+          <div class="col-8 product-desc">
             <h4>{{ product.name }}</h4>
             <h5>{{ product.description }}</h5>
-            <h5>{{ product.price }}</h5>
+            <p>{{ product.price | currency: 'INR' }}</p>
           </div>
           <div class="col-2 product-btn-col">
             <img mat-card-image src="assets/img/edit.svg" (click)="upateProduct(product)" class="product-btn-icons">
-            <img mat-card-image src="assets/img/delete.svg" (click)="deleteProduct(product.id)" class="product-btn-icons">
+            <img mat-card-image src="assets/img/delete.svg" (click)="deleteProductRow(product)" class="product-btn-icons">
           </div>
-          <hr>
         </div>
+        <hr>
       }
       </mat-tab>
       <mat-tab label="Add Products">

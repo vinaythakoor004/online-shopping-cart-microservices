@@ -42,7 +42,22 @@
 
   <div class="mb-3">
     <label for="formFile" class="form-label">Upload product image</label>
-    <input class="form-control" type="file" accept="image/*" id="formImageFile" (change)="onFileChanged($event)">
+    <label class="file-upload">
+      <span class="btn">Choose File</span>
+
+      <span class="file-name">
+        {{ fileName || 'No file chosen' }}
+      </span>
+      <input hidden class="form-control" type="file" accept="image/*" id="formImageFile" (change)="onFileChanged($event)">
+    </label>
   </div>
+  <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>
+</form>
+
+<h2>Or</h2>
+
+<form [formGroup]="productsForm" class="productBulkForm" (ngSubmit)="onBulkUploadSubmit()">
+  <input class="form-control" type="file" accept=".csv" (change)="onCsv($event)">
+  <input class="form-control" type="file" accept=".zip" (change)="onZip($event)">
   <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>
 </form>
