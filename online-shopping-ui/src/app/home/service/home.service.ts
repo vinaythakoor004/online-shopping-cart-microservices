@@ -18,6 +18,10 @@ export class HomeService {
       return this.http.post(this.apiUrl, data);
     }
 
+    bulkUploadProducts(data: FormData): Observable<any> {
+      return this.http.post(`${this.apiUrl}/bulk`, data);
+    }
+
     updateProductDetails(productId: string, data: any): Observable<any> {
       return this.http.put(`${this.apiUrl}/${productId}`, data);
     }

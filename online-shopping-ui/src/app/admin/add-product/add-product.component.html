@@ -53,3 +53,11 @@
   </div>
   <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>
 </form>
+
+<h2>Or</h2>
+
+<form [formGroup]="productsForm" class="productBulkForm" (ngSubmit)="onBulkUploadSubmit()">
+  <input class="form-control" type="file" accept=".csv" (change)="onCsv($event)">
+  <input class="form-control" type="file" accept=".zip" (change)="onZip($event)">
+  <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>
+</form>

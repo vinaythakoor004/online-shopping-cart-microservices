@@ -21,8 +21,13 @@ export class AddProductComponent implements OnInit   {
   isEditDialog = computed(() => !!this.dialogRef);
 
   productsForm: FormGroup;
+  productBulkForm: FormGroup;
   selectedFile: File | null = null;
   fileName: string | null = null;
+  selectedCsvFile: File | null = null;
+  csvFileName: string | null = null;
+  selectedZipFile: File | null = null;
+  zipFileName: string | null = null;
 
   constructor(private fb: FormBuilder, private homeService: HomeService,
     private alertService: AlertService, private loaderService: LoaderService) {
@@ -32,6 +37,11 @@ export class AddProductComponent implements OnInit   {
       skuCode: ['', Validators.required],
       price: ['', Validators.required]
     });
+
+    this.productBulkForm = this.fb.group({
+      csvFile: [null, Validators.required],
+      zipFile: [null, Validators.required]
+    })
   }
 
   ngOnInit(): void {
@@ -55,6 +65,28 @@ export class AddProductComponent implements OnInit   {
     if (file) {
       this.selectedFile = file;
       this.fileName = file.name;
+    }
+  }
+
+  onCsv(event: any): void {
+    this.selectedCsvFile = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
+
+    if (file) {
+      this.selectedCsvFile = file;
+      this.csvFileName = file.name;
+    }
+  }
+
+  onZip(event: any): void {
+    this.selectedZipFile = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
+
+    if (file) {
+      this.selectedZipFile = file;
+      this.zipFileName = file.name;
     }
   }
 
@@ -112,6 +144,44 @@ export class AddProductComponent implements OnInit   {
         this.loaderService.hide();
         this.productAdded.emit(data);
         this.productsForm.reset();
+      },
+      error: (err) => {
+        this.loaderService.hide();
+        console.log(err);
+      }
+    })
+  }
+
+  onBulkUploadSubmit(): void {
+      if (!this.selectedCsvFile) {
+        alert("Please select csv file");
+        return;
+      } else if (!this.selectedZipFile) {
+        alert("Please select zip file");
+        return;
+      }
+
+      const formData = new FormData();
+
+      if (this.selectedCsvFile) {
+        formData.append("file", this.selectedCsvFile);
+      }
+
+      if (this.selectedZipFile) {
+        formData.append("imagesZip", this.selectedZipFile);
+      }
+
+      this.loaderService.show();
+      this.bulkUpload(formData);
+  }
+
+    bulkUpload(formData: FormData): void {
+    this.homeService.bulkUploadProducts(formData).subscribe({
+      next: (data) => {
+        this.alertService.openSnackBar('Product data added successfully!');
+        this.productAdded.emit(data);
+        this.loaderService.hide();
+        this.productBulkForm.reset();
       },
       error: (err) => {
         this.loaderService.hide();
