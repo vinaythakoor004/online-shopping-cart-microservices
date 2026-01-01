@@ -1,4 +1,9 @@
-<h1>Add Product: </h1>
+<div class="headerDiv">
+  <h3 [ngClass]="{'product-list-title': !isEditMode}" class="openSansMedium">{{ ( isEditMode ? "updateProduct" : "addProduct") | translate }}</h3>
+  @if (isEditMode) {
+    <img src="assets/img/close.svg" alt="Product Image" (click)="closeDialog()" class="close-icon">
+  }
+</div>
 <form [formGroup]="productsForm" class="productForm" (ngSubmit)="onSubmit()">
   <div class="mb-3">
     <label for="productName" class="form-label openSansRegular">{{ "productNameRequired" | translate }}</label>
@@ -41,7 +46,7 @@
   </div>
 
   <div class="mb-3">
-    <label for="formFile" class="form-label">Upload product image</label>
+    <label for="formFile" class="form-label">Upload product image:</label>
     <label class="file-upload">
       <span class="btn">Choose File</span>
 
@@ -54,10 +59,18 @@
   <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>
 </form>
 
-<h2>Or</h2>
+@if (!this.isEditMode) {
+  <h2 class="orClass">Or</h2>
 
-<form [formGroup]="productsForm" class="productBulkForm" (ngSubmit)="onBulkUploadSubmit()">
-  <input class="form-control" type="file" accept=".csv" (change)="onCsv($event)">
-  <input class="form-control" type="file" accept=".zip" (change)="onZip($event)">
+  <form [formGroup]="productsForm" class="productBulkForm" (ngSubmit)="onBulkUploadSubmit()">
+    <div class="mb-3">
+      <label class="form-label openSansRegular">Upload product CSV file (required): </label>
+      <input class="form-control" type="file" accept=".csv" (change)="onCsv($event)">
+    </div>
+  <div class="mb-3">
+    <label class="form-label openSansRegular">Upload product image ZIP file (required): </label>
+    <input class="form-control" type="file" accept=".zip" (change)="onZip($event)">
+  </div>
   <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>
 </form>
+}

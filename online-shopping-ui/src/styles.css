@@ -130,7 +130,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .mat-mdc-dialog-container .mat-mdc-dialog-surface {
-  padding: 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 8px;
   background-color: white !important;
 }

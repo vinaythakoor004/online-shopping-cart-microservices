@@ -23,3 +23,34 @@
   text-overflow: ellipsis;
   flex: 1;
 }
+
+.product-list-title {
+  padding: 2rem 0rem;
+}
+
+.productForm {
+  padding: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+}
+
+.productBulkForm {
+  padding: 2rem;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+}
+
+.orClass {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.headerDiv {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.close-icon {
+  cursor: pointer;
+}

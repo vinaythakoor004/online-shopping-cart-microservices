@@ -12,7 +12,7 @@ An online shopping website built with a microservices architecture. The applicat
 - Future features: Cart, order management, and more
 
 ## Tech Stack / Tools Used
-- **Frontend:** Angular 20, Angular Material, HTML, CSS, JavaScript, TypeScript  
+- **Frontend:** Angular 20, Angular Material, HTML, CSS, JavaScript, TypeScript, Supports JWT/Auth      integration  
 - **Backend:** Java 8, Spring Boot, Microservices architecture  
 - **Authentication & Security:** Keycloak  
 - **Databases:** MongoDB, PostgreSQL  

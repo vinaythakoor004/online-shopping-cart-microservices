@@ -9,5 +9,8 @@
   "productPriceIsRequired": "Product price is required.",
   "submit": "Submit",
   "confirmDelete": "Are you sure you want to delete row:",
-  "confirmEdit": "Are you sure you want to edit row:"
+  "confirmEdit": "Are you sure you want to edit row:",
+  "productList": "Product List",
+  "updateProduct": "Update Product",
+  "addProduct": "Add Product"
 }

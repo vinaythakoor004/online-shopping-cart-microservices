@@ -28,6 +28,7 @@ export class AddProductComponent implements OnInit   {
   csvFileName: string | null = null;
   selectedZipFile: File | null = null;
   zipFileName: string | null = null;
+  isEditMode: boolean = false;
 
   constructor(private fb: FormBuilder, private homeService: HomeService,
     private alertService: AlertService, private loaderService: LoaderService) {
@@ -45,6 +46,7 @@ export class AddProductComponent implements OnInit   {
   }
 
   ngOnInit(): void {
+    this.isEditMode = this.data ? true : false;
     this.productsForm.patchValue({
       name: this.data?.name || '',
       description: this.data?.description || '',
@@ -140,7 +142,7 @@ export class AddProductComponent implements OnInit   {
     this.homeService.updateProductDetails(productId, formData).subscribe({
       next: (data) => {
         this.alertService.openSnackBar('Product data updated successfully!');
-        this.dialogRef?.close();
+        this.dialogRef?.close(true);
         this.loaderService.hide();
         this.productAdded.emit(data);
         this.productsForm.reset();
@@ -188,5 +190,9 @@ export class AddProductComponent implements OnInit   {
         console.log(err);
       }
     })
+  }
+
+  closeDialog(): void {
+    this.dialogRef?.close(false);
   }
 }
