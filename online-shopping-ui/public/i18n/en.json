@@ -12,5 +12,12 @@
   "confirmEdit": "Are you sure you want to edit row:",
   "productList": "Product List",
   "updateProduct": "Update Product",
-  "addProduct": "Add Product"
+  "addProduct": "Add Product",
+  "addressLine1": "Address Line 1",
+  "addressLine2": "Address Line 2",
+  "city": "City",
+  "state": "State",
+  "pinCode": "Pin Code",
+  "country": "Country",
+  "isDefault": "Is Default"
 }

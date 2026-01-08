@@ -10,6 +10,10 @@ export class HomeService {
 
   constructor(private http: HttpClient) { }
 
+    getProFile(): Observable<any> {
+      return this.http.get('/api/user/me');
+    }
+
     getProductData(): Observable<any> {
       return this.http.get(this.apiUrl);
     }

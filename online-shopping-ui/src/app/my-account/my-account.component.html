@@ -1,0 +1,38 @@
+<div class="container-fluid my-account">
+  <img class="my-account-img" src="assets/img/account_circle.svg" alt="cart">
+  <div class="personelInfo">
+    <p class="form-label openSansSemiBold personelInfoLabel">Personal Information</p>
+    @if(this.profile; as user)  {
+      @if (user.firstName) {
+        <p class="form-label openSansSemiBold">First name : <span class="openSansRegular">{{ user.firstName }}</span></p>
+      }
+      @if (user.lastName) {
+        <p class="form-label openSansSemiBold">Last name : <span class="openSansRegular">{{ user.lastName }}</span></p>
+      }
+      @if (user.email) {
+        <p class="form-label openSansSemiBold">Email : <span class="openSansRegular">{{ user.email }}</span></p>
+      }
+      @if (user.gender) {
+        <p class="form-label openSansSemiBold">Gender : <span class="openSansRegular">{{ user.gender }}</span></p>
+      }
+      @if (user.mobileNumber) {
+        <p class="form-label openSansSemiBold">Mobile Number : <span class="openSansRegular">{{ user.mobileNumber }}</span></p>
+      }
+  }
+  </div>
+  <div class="address-class">
+    @if (!this.profile?.addresses?.length) {
+        <span>Add address <img class="edit-address-img" src="assets/img/edit.svg" alt="cart" (click)="addOrUpdateAddress()"></span>
+    } @else {
+      @for (item of this.profile?.addresses; track $index) {
+        <label for="Address" class="form-label openSansSemiBold AddressLabel">Address</label>
+        <label for="Delivery address" class="form-label openSansSemiBold">Delivery address : <span class="openSansRegular">Near rameshwar mandir, dewoolwada, malvan</span></label>
+        <label for="Phone no" class="form-label openSansSemiBold">Phone no : <span class="openSansRegular">9420203946</span></label>
+        <label for="District" class="form-label openSansSemiBold">District : <span class="openSansRegular">Sindhudurga</span></label>
+        <label for="State" class="form-label openSansSemiBold">State : <span class="openSansRegular">Maharashtra</span></label>
+        <label for="Pin" class="form-label openSansSemiBold">Pin : <span class="openSansRegular">416606</span></label>
+      <img class="edit-address-img" src="assets/img/edit.svg" alt="cart">
+      }
+    }
+  </div>
+</div>

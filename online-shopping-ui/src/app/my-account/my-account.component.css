@@ -1,0 +1,33 @@
+.personelInfo {
+  padding: 2rem;
+}
+
+.personelInfoLabel {
+  font-size: 1.5rem;
+}
+
+.my-account {
+  display: flex;
+  padding: 2rem;
+  justify-content: start;
+}
+
+.my-account-img {
+  width: 10rem;
+  align-self: start;
+  margin-top: 2rem;
+}
+
+.address-class {
+  display: grid;
+  padding: 2rem;
+}
+
+.AddressLabel {
+  font-size: 1.5rem;
+}
+
+.edit-address-img {
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
