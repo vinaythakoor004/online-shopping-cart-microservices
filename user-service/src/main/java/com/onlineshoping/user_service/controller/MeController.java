@@ -17,8 +17,7 @@ public class MeController {
     private UserService userService;
 
     @GetMapping
-    public UserResponseDto getProfile(Jwt jwt) {
-        System.out.println(jwt);
+    public UserResponseDto getProfile(@AuthenticationPrincipal Jwt jwt) {
         return userService.getProfile(jwt);
     }
 
