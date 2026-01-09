@@ -1,14 +1,12 @@
 <div class="headerDiv">
   <h3 [ngClass]="{'product-list-title': !isEditMode}" class="openSansMedium">{{ ( isEditMode ? "updateProduct" : "addProduct") | translate }}</h3>
-  @if (isEditMode) {
-    <img src="assets/img/close.svg" alt="Product Image" (click)="closeDialog()" class="close-icon">
-  }
+  <img src="assets/img/close.svg" alt="Product Image" (click)="closeDialog()" class="close-icon">
 </div>
 <form [formGroup]="addressForm" class="productForm" (ngSubmit)="onSubmit()">
   <div class="mb-3">
     <label for="addressLine1" class="form-label openSansRegular">{{ "addressLine1" | translate }}</label>
     <input type="text" class="form-control" autocomplete="off" id="addressLine1" formControlName="addressLine1">
-    @if (addressForm.get('addressLine1')?.invalid && addressForm.get('name')?.touched) {
+    @if (addressForm.get('addressLine1')?.invalid && addressForm.get('addressLine1')?.touched) {
       <div class="form-text errorMsg">
           {{ "productNameIsRequired" | translate }}
       </div>
@@ -18,11 +16,6 @@
   <div class="mb-3">
     <label for="addressLine2" class="form-label openSansRegular">{{ "addressLine2" | translate }}</label>
     <input type="text" class="form-control" autocomplete="off" id="addressLine2" formControlName="addressLine2">
-    @if (addressForm.get('addressLine2')?.invalid && addressForm.get('addressLine2')?.touched) {
-      <div class="form-text errorMsg">
-          {{ "productDescriptionIsRequired" | translate }}
-      </div>
-    }
   </div>
 
   <div class="mb-3">
@@ -66,13 +59,15 @@
   </div>
 
   <div class="mb-3">
-    <label for="isDefault" class="form-label openSansRegular">{{ "isDefault" | translate }}</label>
-    <input type="text" class="form-control" autocomplete="off" id="isDefault" formControlName="isDefault">
-    @if (addressForm.get('isDefault')?.invalid && addressForm.get('isDefault')?.touched) {
-      <div class="form-text errorMsg">
-          {{ "productPriceIsRequired" | translate }}
+    <label for="isDefault" class="form-label openSansRegular me-2">{{ "isDefault" | translate }}</label>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="checkboxTrue" value="true" formControlName="isDefault">
+      <label class="form-check-label" for="checkboxTrue">true</label>
     </div>
-    }
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="checkboxFalse" value="false" formControlName="isDefault">
+      <label class="form-check-label" for="checkboxFalse">false</label>
+    </div>
   </div>
 
   <button type="submit" class="btn btn-secondary openSansRegular">{{ "submit" | translate }}</button>

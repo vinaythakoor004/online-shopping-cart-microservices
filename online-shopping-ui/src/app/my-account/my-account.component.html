@@ -21,16 +21,17 @@
   }
   </div>
   <div class="address-class">
-    @if (!this.profile?.addresses?.length) {
-        <span>Add address <img class="edit-address-img" src="assets/img/edit.svg" alt="cart" (click)="addOrUpdateAddress()"></span>
-    } @else {
+    @if (this.profile?.addresses?.length !<= 3) {
+        <span>Add address <img class="edit-address-img" src="assets/img/add.svg" alt="cart" (click)="addOrUpdateAddress()"></span>
+    }
+    @if (this.profile?.addresses?.length) {
       @for (item of this.profile?.addresses; track $index) {
         <label for="Address" class="form-label openSansSemiBold AddressLabel">Address</label>
-        <label for="Delivery address" class="form-label openSansSemiBold">Delivery address : <span class="openSansRegular">Near rameshwar mandir, dewoolwada, malvan</span></label>
-        <label for="Phone no" class="form-label openSansSemiBold">Phone no : <span class="openSansRegular">9420203946</span></label>
-        <label for="District" class="form-label openSansSemiBold">District : <span class="openSansRegular">Sindhudurga</span></label>
-        <label for="State" class="form-label openSansSemiBold">State : <span class="openSansRegular">Maharashtra</span></label>
-        <label for="Pin" class="form-label openSansSemiBold">Pin : <span class="openSansRegular">416606</span></label>
+        <label for="Delivery address" class="form-label openSansSemiBold">Delivery address : <span class="openSansRegular">{{ item.addressLine1 || item.addressLine2 }}</span></label>
+        <label for="District" class="form-label openSansSemiBold">District : <span class="openSansRegular">{{ item.city }}</span></label>
+        <label for="State" class="form-label openSansSemiBold">State : <span class="openSansRegular">{{ item.state }}</span></label>
+        <label for="Country" class="form-label openSansSemiBold">Country : <span class="openSansRegular">{{ item.country }}</span></label>
+        <label for="Pin" class="form-label openSansSemiBold">Pin : <span class="openSansRegular">{{ item.pinCode }}</span></label>
       <img class="edit-address-img" src="assets/img/edit.svg" alt="cart">
       }
     }

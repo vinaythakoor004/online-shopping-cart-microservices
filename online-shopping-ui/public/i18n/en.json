@@ -19,5 +19,5 @@
   "state": "State",
   "pinCode": "Pin Code",
   "country": "Country",
-  "isDefault": "Is Default"
+  "isDefault": "Default Address"
 }

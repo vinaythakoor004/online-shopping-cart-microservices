@@ -3,7 +3,9 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
-import { User } from '../../model/user';
+import { Address, User } from '../../model/user';
+import { LoaderService } from '../../common/services/loader/loader.service';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-add-address',
@@ -17,7 +19,7 @@ export class AddAddressComponent {
   isEditMode: boolean = false;
   addressForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private loaderService: LoaderService, private userService: UserService) {
     this.addressForm = this.fb.group({
       addressLine1: ['', Validators.required],
       addressLine2: [''],
@@ -29,7 +31,28 @@ export class AddAddressComponent {
     })
   }
 
-  onSubmit() {  }
+  onSubmit() {
+    if (this.addressForm.valid) {
+      this.addressForm.get('isDefault')?.setValue(this.addressForm.get('isDefault')?.value === 'true');
+      console.log(this.addressForm.value);
+      this.loaderService.show();
+      this.addAddress(this.addressForm.value);
+      // this.addressForm.reset();
+    }
+   }
+
+  addAddress(addressData: Address): void {
+    this.userService.addAddress(addressData).subscribe({
+      next: (response) => {
+        this.loaderService.hide();
+        this.userService.userProfile()?.addresses.push(response);
+        // this.dialogRef?.close(true);
+      },
+      error: (error) => {
+        this.loaderService.hide();
+      }
+    })
+  }
 
   closeDialog(): void {
     this.dialogRef?.close(false);
