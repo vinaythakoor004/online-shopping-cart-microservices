@@ -1,13 +1,13 @@
 <div class="productDiv">
   <mat-tab-group class="custom-tabs">
       <mat-tab label="Dashboard" class="tabDiv" style="color: red;">
-      <h1 class="product-list-title">Product List:</h1><hr>
+      <h2 class="product-list-title openSansMedium">{{ "productList" | translate }}</h2><hr>
       @for (product of productList; track product.id) {
         <div class="row w-100 product-row">
           <div class="col-2 m-auto"><img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" class="product-image"></div>
           <div class="col-8 product-desc">
-            <h4>{{ product.name }}</h4>
-            <h5>{{ product.description }}</h5>
+            <h4 class="openSansSemiBold">{{ product.name }}</h4>
+            <h5 class="openSansRegular">{{ product.description }}</h5>
             <p>{{ product.price | currency: 'INR' }}</p>
           </div>
           <div class="col-2 product-btn-col">

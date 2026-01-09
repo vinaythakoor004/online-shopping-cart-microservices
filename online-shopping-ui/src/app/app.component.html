@@ -4,23 +4,20 @@
       <header #navbar class="nav navbarClass fixed-top bg-dark">
           <a #home class="nav-link" aria-current="page" routerLink="home" [routerLinkActive]="['activeClass']"
               (click)="navigatePage($event, 'home')">Home</a>
-          <a #services class="nav-link" routerLink="services" [routerLinkActive]="['activeClass']"
-              (click)="navigatePage($event, 'services')">Services</a>
-          <a #plans class="nav-link" routerLink="plans" [routerLinkActive]="['activeClass']"
-              (click)="navigatePage($event, 'plans')">Plans</a>
-          <a #contact class="nav-link" routerLink="contact" [routerLinkActive]="['activeClass']"
-              (click)="navigatePage($event, 'contact')">Contact</a>
           <a #about class="nav-link" routerLink="about" [routerLinkActive]="['activeClass']"
               (click)="navigatePage($event, 'about')">About</a>
-          <a #about class="nav-link" routerLink="admin" [routerLinkActive]="['activeClass']"
+          <a #about *kaHasRoles="['admin']" class="nav-link" routerLink="admin" [routerLinkActive]="['activeClass']"
               (click)="navigatePage($event, 'admin')">Admin</a>
-          <!-- <a #about class="nav-link" routerLink="ex" [routerLinkActive]="['activeClass']"
-              (click)="navigatePage($event, 'ex')">ex</a> -->
-
-          <!-- <a ></a> -->
-        <button class="account_icon nav-link" [matBadge]="notifications.length || 0" matBadgeColor="warn"  [routerLinkActive]="['activeClass']" popovertarget="mydiv"><mat-icon class="img-responsive aboutImg" popovertarget="mydiv">account_circle</mat-icon></button>
-          <a #about *ngIf="!isLoggedIn()" class="nav-link" routerLink="login" [routerLinkActive]="['activeClass']"
-              (click)="navigatePage($event, 'login')">Log In</a>
+        <!-- <button class="account_icon nav-link" [matBadge]="notifications.length || 0" matBadgeColor="warn"
+          [routerLinkActive]="['activeClass']" popovertarget="mydiv">
+          <mat-icon class="img-responsive aboutImg" popovertarget="mydiv">account_circle</mat-icon></button>
+          @if (!isLoggedIn()) {
+            <a #about class="nav-link" routerLink="login" [routerLinkActive]="['activeClass']" (click)="navigatePage($event, 'login')">Log In</a>
+          } -->
+          <a #account class="nav-link" routerLink="my-account" [routerLinkActive]="['activeClass']" [matBadge]="notifications.length || 0" matBadgeColor="warn"
+            (click)="navigatePage($event, 'my-account')"><mat-icon class="img-responsive aboutImg" popovertarget="mydiv">account_circle</mat-icon></a>
+          <a #cart class="nav-link" routerLink="cart" [routerLinkActive]="['activeClass']" [matBadge]="notifications.length || 0" matBadgeColor="warn"
+            (click)="navigatePage($event, 'cart')"><mat-icon class="img-responsive aboutImg" popovertarget="mydiv">shopping_cart</mat-icon></a>
       </header>
     }
     <main class="main-content">

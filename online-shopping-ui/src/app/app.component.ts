@@ -1,6 +1,6 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LoaderComponent } from './common/component/loader/loader.component';
 import { MatBadgeModule} from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,10 +9,14 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PopupService } from './common/services/popup/popup.service';
 import { AuthService } from './common/services/auth/auth.service';
 import { WebsocketService } from './common/services/websocket/websocket.service';
+import { HasRolesDirective } from 'keycloak-angular';
+import { HomeService } from './home/service/home.service';
+import Keycloak from 'keycloak-js';
+import { UserService } from './my-account/service/user.service';
 
 @Component({
   selector: 'app-root',
-  imports: [ CommonModule, RouterLink, LoaderComponent, RouterOutlet, RouterLinkActive, MatTooltipModule, MatBadgeModule, MatIconModule, TranslatePipe ],
+  imports: [ CommonModule, HasRolesDirective, RouterLink, LoaderComponent, RouterOutlet, RouterLinkActive, MatTooltipModule, MatBadgeModule, MatIconModule, TranslatePipe ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -24,17 +28,20 @@ export class AppComponent {
   loginUserDetails: any= {};
   notifications: string[] = [];
   dropdownOpen = false;
+  route: ActivatedRouteSnapshot | null = null;
+  private readonly keycloak = inject(Keycloak);
 
   constructor(
     private router: Router, private location: Location, private popupService: PopupService,
     private translate: TranslateService, private webSocketService: WebsocketService,
-    private authService: AuthService
+    private authService: AuthService, private homeService: HomeService, private userService: UserService
   ) {
     this.currentRoute = "";
     this.currentRoute = this.location.path();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
     //  this.webSocketService.onMessage().subscribe((msg: string) => {
     //   this.notifications.unshift(msg); // Add new message on top
     // });
@@ -43,6 +50,17 @@ export class AppComponent {
     //     this.loginUserDetails = resp;
     //   }
     // })
+
+    if (this.keycloak?.authenticated) {
+      this.userService.setProfile(await this.keycloak.loadUserProfile());
+    }
+
+    this.homeService.getProFile()
+    .subscribe({
+      next: (data) => {
+          console.log(data)
+        }
+      });
   }
 
   ngDoCheck() {

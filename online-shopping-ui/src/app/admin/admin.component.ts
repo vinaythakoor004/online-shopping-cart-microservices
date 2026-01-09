@@ -9,6 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { LoaderService } from '../common/services/loader/loader.service';
 import { PopupService } from '../common/services/popup/popup.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export interface adminTab {
   label: string;
@@ -17,7 +18,7 @@ export interface adminTab {
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, MatTabsModule, AddProductComponent, MatButtonModule, MatDialogModule ],
+  imports: [CommonModule, MatTabsModule, AddProductComponent, MatButtonModule, MatDialogModule, TranslatePipe ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
@@ -89,8 +90,9 @@ export class AdminComponent implements OnInit {
       exitAnimationDuration: '100',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.getProducts();
+    dialogRef.afterClosed().subscribe((isUpdate: boolean) => {
+      if (isUpdate)
+        this.getProducts();
     });
   }
 }

@@ -3,6 +3,9 @@ import { PageNotFoundComponent } from './common/component/page-not-found/page-no
 import { HomeComponent } from './home/home.component';
 import { loaderKeycloakGuard } from './common/services/route-guard/route-guard.service';
 import { AdminComponent } from './admin/admin.component';
+import { ProductDescriptionComponent } from './product-description/product-description.component';
+import { CartComponent } from './cart/cart.component';
+import { MyAccountComponent } from './my-account/my-account.component';
 
 export const routes: Routes = [
   {
@@ -14,9 +17,24 @@ export const routes: Routes = [
           role: ['user', 'admin']
         }
       },
+      { path: 'product/:productName', component: ProductDescriptionComponent, canActivate: [loaderKeycloakGuard],
+        data: {
+          role: ['user', 'admin']
+        }
+      },
       { path: 'admin', component: AdminComponent, canActivate: [loaderKeycloakGuard],
         data: {
           role: ['admin']
+        }
+      },
+      { path: 'cart', component: CartComponent, canActivate: [loaderKeycloakGuard],
+        data: {
+          role: ['user', 'admin']
+        }
+      },
+      { path: 'my-account', component: MyAccountComponent, canActivate: [loaderKeycloakGuard],
+        data: {
+          role: ['user', 'admin']
         }
       },
       { path: '**', component: PageNotFoundComponent }
