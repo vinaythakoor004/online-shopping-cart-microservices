@@ -25,7 +25,7 @@ export class MyAccountComponent implements OnInit {
         const dialogRef = this.dialog.open(AddAddressComponent, {
           panelClass: 'custom-dialog-container',
           width: '60vw',
-          height: '39rem',
+          // height: '38rem',
           maxWidth: '100vw',
           data: this.profile,
           disableClose: true,

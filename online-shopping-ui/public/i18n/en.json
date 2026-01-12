@@ -19,5 +19,12 @@
   "state": "State",
   "pinCode": "Pin Code",
   "country": "Country",
-  "isDefault": "Default Address"
+  "isDefault": "Default Address",
+  "addAddress": "Add Address",
+  "updateAddress": "Update Address",
+  "addressLine1IsRequired": "Address Line 1 is required.",
+  "cityIsRequired": "City is required.",
+  "stateIsRequired": "State is required.",
+  "pinCodeIsRequired": "Pin Code is required.",
+  "countryIsRequired": "Country is required."
 }
