@@ -53,14 +53,15 @@ export class AppComponent {
 
     if (this.keycloak?.authenticated) {
       this.userService.setProfile(await this.keycloak.loadUserProfile());
+      this.homeService.getProFile()
+      .subscribe({
+        next: (data) => {
+          this.userService.setProfile(data);
+            console.log(data)
+          }
+      });
     }
 
-    this.homeService.getProFile()
-    .subscribe({
-      next: (data) => {
-          console.log(data)
-        }
-      });
   }
 
   ngDoCheck() {

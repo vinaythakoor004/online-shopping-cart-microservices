@@ -27,7 +27,10 @@ export class UserService {
     this.profile.firstName = profile?.firstName;
     this.profile.lastName = profile.lastName;
     this.profile.email = profile.email;
-
+    this.profile.addresses = profile.addresses || [];
+    this.profile.gender = profile.gender || '';
+    this.profile.keycloakUserId = profile.keycloakUserId || '';
+    this.profile.mobileNumber = profile.mobileNumber || '';
     return this.profile;
   }
 

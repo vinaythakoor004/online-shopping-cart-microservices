@@ -21,6 +21,7 @@
 .address-class {
   display: grid;
   padding: 2rem;
+  margin-top: 6px;
 }
 
 .AddressLabel {

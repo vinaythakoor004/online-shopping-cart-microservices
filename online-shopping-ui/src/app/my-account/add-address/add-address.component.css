@@ -7,3 +7,17 @@
 .close-icon {
   cursor: pointer;
 }
+
+.errorMsg {
+    color: red;
+    font-size: 0.8rem;
+}
+
+.addressForm input {
+    outline: none;
+    box-shadow: none;
+}
+
+.addressForm input[type=text]:focus {
+    border: 1px solid gray;
+}

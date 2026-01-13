@@ -21,8 +21,8 @@
   }
   </div>
   <div class="address-class">
-    @if (this.profile?.addresses?.length !<= 3) {
-        <span>Add address <img class="edit-address-img" src="assets/img/add.svg" alt="cart" (click)="addOrUpdateAddress()"></span>
+    @if ((this.profile?.addresses?.length ?? 0) > 3) {
+        <span>Add address <img class="edit-address-img m-auto" src="assets/img/add.svg" alt="cart" (click)="addOrUpdateAddress()"></span>
     }
     @if (this.profile?.addresses?.length) {
       @for (item of this.profile?.addresses; track $index) {

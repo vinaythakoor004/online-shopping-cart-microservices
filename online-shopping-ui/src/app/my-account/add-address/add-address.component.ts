@@ -37,7 +37,7 @@ export class AddAddressComponent {
       console.log(this.addressForm.value);
       this.loaderService.show();
       this.addAddress(this.addressForm.value);
-      // this.addressForm.reset();
+      this.addressForm.reset();
     }
    }
 
@@ -46,7 +46,7 @@ export class AddAddressComponent {
       next: (response) => {
         this.loaderService.hide();
         this.userService.userProfile()?.addresses.push(response);
-        // this.dialogRef?.close(true);
+        this.dialogRef?.close(true);
       },
       error: (error) => {
         this.loaderService.hide();
