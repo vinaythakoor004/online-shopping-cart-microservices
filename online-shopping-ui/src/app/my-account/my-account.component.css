@@ -1,5 +1,6 @@
 .personelInfo {
   padding: 2rem;
+  border: 1px solid #ccc;
 }
 
 .personelInfoLabel {
@@ -10,6 +11,7 @@
   display: flex;
   padding: 2rem;
   justify-content: start;
+  gap: 1rem;
 }
 
 .my-account-img {
@@ -21,14 +23,36 @@
 .address-class {
   display: grid;
   padding: 2rem;
-  margin-top: 6px;
+  border: 1px solid #ccc;
+}
+
+.addressDiv {
+  display: grid;
+  /* margin-bottom: 1.5rem; */
+  border: 1px solid #ccc;
 }
 
 .AddressLabel {
   font-size: 1.5rem;
 }
 
-.edit-address-img {
+.add-address-img {
   margin-top: 0.5rem;
   cursor: pointer;
+  padding: 0rem 1rem 0rem 0rem;
+}
+
+.edit-address-img {
+  cursor: pointer;
+  float: right;
+  padding: 0rem 0rem 0rem 1rem;
+}
+
+.addAddressLabel {
+  margin-bottom: 0.5rem;
+}
+
+.address-label {
+  padding: 1rem;
+  margin-top: 6px;
 }

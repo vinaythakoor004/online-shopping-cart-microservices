@@ -8,11 +8,15 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserService {
   private apiUrl = '/api/user/me/addresses';
-  userProfile = signal<User | null>(null);
+  userProfile = signal<User>(this.setEmptyProfile());
   profile: User;
 
   constructor(private http: HttpClient) {
-    this.profile = {
+    this.profile = this.setEmptyProfile();
+  }
+
+  setEmptyProfile(): User {
+    let user = {
       firstName: '',
       lastName: '',
       email: '',
@@ -21,6 +25,8 @@ export class UserService {
       mobileNumber: '',
       addresses: []
     }
+
+    return user;
   }
 
   mapUserProfileData(profile: User): User {
@@ -46,7 +52,22 @@ export class UserService {
     return this.http.post<Address>(this.apiUrl, address);
   }
 
+  updateAddress(addressId: string, address: Address): Observable<Address> {
+    const url = `${this.apiUrl}/${addressId}`;
+    return this.http.put<Address>(url, address);
+  }
+
   getAddresses(): Observable<Address[]> {
     return this.http.get<Address[]>(this.apiUrl);
+  }
+
+  deleteAddress(addressId: number): Observable<void> {
+    const url = `${this.apiUrl}/${addressId}`;
+    return this.http.delete<void>(url);
+  }
+
+  setDefaultAddress(addressId: number): Observable<void> {
+    const url = `${this.apiUrl}/${addressId}/default`;
+    return this.http.put<void>(url, {});
   }
 }

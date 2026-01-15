@@ -47,6 +47,7 @@ public class AddressService {
 
     private AddressResponseDto toResponse(Address address) {
         return AddressResponseDto.builder()
+                .id(address.getId())
                 .addressLine1(address.getAddressLine1())
                 .addressLine2(address.getAddressLine2())
                 .city(address.getCity())
@@ -75,7 +76,7 @@ public class AddressService {
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new RuntimeException("Address not found."));
 
-        if (!address.getUser().getId().equals(Long.valueOf(jwt.getSubject()))) {
+        if (!address.getUser().getKeycloakUserId().equals(jwt.getSubject())) {
             throw new RuntimeException("Unauthorized");
         }
 

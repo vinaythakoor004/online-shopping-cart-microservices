@@ -13,6 +13,7 @@ import { HasRolesDirective } from 'keycloak-angular';
 import { HomeService } from './home/service/home.service';
 import Keycloak from 'keycloak-js';
 import { UserService } from './my-account/service/user.service';
+import { LoaderService } from './common/services/loader/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +34,7 @@ export class AppComponent {
 
   constructor(
     private router: Router, private location: Location, private popupService: PopupService,
-    private translate: TranslateService, private webSocketService: WebsocketService,
+    private translate: TranslateService, private webSocketService: WebsocketService, private loaderService: LoaderService,
     private authService: AuthService, private homeService: HomeService, private userService: UserService
   ) {
     this.currentRoute = "";
@@ -52,13 +53,18 @@ export class AppComponent {
     // })
 
     if (this.keycloak?.authenticated) {
+      this.loaderService.show();
       this.userService.setProfile(await this.keycloak.loadUserProfile());
       this.homeService.getProFile()
       .subscribe({
         next: (data) => {
+          this.loaderService.hide();
           this.userService.setProfile(data);
             console.log(data)
-          }
+          },
+        error: (error) => {
+          this.loaderService.hide();
+        }
       });
     }
 
