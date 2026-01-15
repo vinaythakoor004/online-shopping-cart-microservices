@@ -18,5 +18,5 @@ public class UserResponseDto {
     private String email;
     private String mobileNumber;
     private String gender;
-    private List<Address> addresses;
+    private List<AddressResponseDto> addresses;
 }

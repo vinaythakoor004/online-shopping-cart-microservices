@@ -1,5 +1,6 @@
 package com.onlineshoping.user_service.service;
 
+import com.onlineshoping.user_service.dto.AddressResponseDto;
 import com.onlineshoping.user_service.dto.UpdateProfileRequestDto;
 import com.onlineshoping.user_service.dto.UserResponseDto;
 import com.onlineshoping.user_service.model.User;
@@ -7,6 +8,9 @@ import com.onlineshoping.user_service.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.oauth2.jwt.Jwt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +34,7 @@ public class UserService {
                             .email(jwt.getClaim("email"))
                             .firstName(jwt.getClaim("given_name"))
                             .lastName(jwt.getClaim("family_name"))
+                            .addresses(new ArrayList<>())
                             .build();
                     return userRepo.save(u);
                 });
@@ -48,6 +53,12 @@ public class UserService {
     }
 
     public UserResponseDto mapToUserResponse(User user) {
+        List<AddressResponseDto> addressDto = (user.getAddresses() == null) ? List.of() :
+                user.getAddresses().stream()
+                        .map(addr -> new AddressResponseDto(addr.getId(), addr.getAddressLine1(), addr.getAddressLine2(),
+                                addr.getCity(), addr.getState(), addr.getPinCode(), addr.getCountry(), addr.isDefault()))
+                        .toList();
+
         return UserResponseDto.builder()
                 .keycloakUserId(user.getKeycloakUserId())
                 .firstName(user.getFirstName())
@@ -55,7 +66,7 @@ public class UserService {
                 .email(user.getEmail())
                 .mobileNumber(user.getMobileNumber())
                 .gender(user.getGender())
-                .addresses(user.getAddresses())
+                .addresses(addressDto)
                 .build();
     }
 }

@@ -2,7 +2,7 @@
   <img class="my-account-img" src="assets/img/account_circle.svg" alt="cart">
   <div class="personelInfo">
     <p class="form-label openSansSemiBold personelInfoLabel">Personal Information</p>
-    @if(this.profile; as user)  {
+    @if(profile; as user)  {
       @if (user.firstName) {
         <p class="form-label openSansSemiBold">First name : <span class="openSansRegular">{{ user.firstName }}</span></p>
       }
@@ -21,18 +21,29 @@
   }
   </div>
   <div class="address-class">
-    @if ((this.profile?.addresses?.length ?? 0) > 3) {
-        <span>Add address <img class="edit-address-img m-auto" src="assets/img/add.svg" alt="cart" (click)="addOrUpdateAddress()"></span>
+    <p class="form-label openSansSemiBold addressLabel">Manage Addresses</p>
+    @if (!((this.profile?.addresses?.length ?? 0) >= 3)) {
+        <span class="addAddressLabel">Add address <img class="add-address-img m-auto" src="assets/img/add.svg" alt="add" title="Add Address" (click)="addOrUpdateAddress(false, null)"></span>
     }
-    @if (this.profile?.addresses?.length) {
-      @for (item of this.profile?.addresses; track $index) {
-        <label for="Address" class="form-label openSansSemiBold AddressLabel">Address</label>
-        <label for="Delivery address" class="form-label openSansSemiBold">Delivery address : <span class="openSansRegular">{{ item.addressLine1 || item.addressLine2 }}</span></label>
-        <label for="District" class="form-label openSansSemiBold">District : <span class="openSansRegular">{{ item.city }}</span></label>
-        <label for="State" class="form-label openSansSemiBold">State : <span class="openSansRegular">{{ item.state }}</span></label>
-        <label for="Country" class="form-label openSansSemiBold">Country : <span class="openSansRegular">{{ item.country }}</span></label>
-        <label for="Pin" class="form-label openSansSemiBold">Pin : <span class="openSansRegular">{{ item.pinCode }}</span></label>
-      <img class="edit-address-img" src="assets/img/edit.svg" alt="cart">
+    @if (profile?.addresses?.length) {
+      @for (item of profile?.addresses; track $index) {
+        <!-- <label for="Address" class="form-label openSansSemiBold AddressLabel">Address</label> -->
+        <div class="addressDiv">
+          <label for="Delivery address" class="form-label address-label openSansSemiBold">
+            <span class="openSansRegular">{{ item.addressLine1 || item.addressLine2 }}</span>,
+            <span class="openSansRegular">{{ item.city }}</span>,
+            <span class="openSansRegular">{{ item.state }}</span> - <span class="openSansSemiBold">{{ item.pinCode }}</span>,
+            <span class="openSansRegular">{{ item.country }}</span>
+            <img class="edit-address-img" src="assets/img/delete.svg" alt="delete" title="Delete Address"  (click)="deleteAddress(item)">
+            <img class="edit-address-img" src="assets/img/edit.svg" alt="edit" title="Edit Address"  (click)="addOrUpdateAddress(true, item)">
+          </label>
+
+          <!-- <label for="Delivery address" class="form-label openSansSemiBold">Delivery address : <span class="openSansRegular">{{ item.addressLine1 || item.addressLine2 }}</span></label>
+          <label for="District" class="form-label openSansSemiBold">District : <span class="openSansRegular">{{ item.city }}</span></label>
+          <label for="State" class="form-label openSansSemiBold">State : <span class="openSansRegular">{{ item.state }}</span></label>
+          <label for="Country" class="form-label openSansSemiBold">Country : <span class="openSansRegular">{{ item.country }}</span></label>
+          <label for="Pin" class="form-label openSansSemiBold">Pin : <span class="openSansRegular">{{ item.pinCode }}</span></label> -->
+        </div>
       }
     }
   </div>
