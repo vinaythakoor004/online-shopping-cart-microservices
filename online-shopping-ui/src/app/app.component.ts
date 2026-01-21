@@ -53,17 +53,17 @@ export class AppComponent {
     // })
 
     if (this.keycloak?.authenticated) {
-      this.loaderService.show();
+      this.loaderService.globalLoaderShow();
       this.userService.setProfile(await this.keycloak.loadUserProfile());
       this.homeService.getProFile()
       .subscribe({
         next: (data) => {
-          this.loaderService.hide();
+          this.loaderService.globalLoaderHide();
           this.userService.setProfile(data);
             console.log(data)
           },
         error: (error) => {
-          this.loaderService.hide();
+          this.loaderService.globalLoaderHide();
         }
       });
     }

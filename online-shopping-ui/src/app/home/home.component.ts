@@ -15,6 +15,8 @@ import { LoaderService } from '../common/services/loader/loader.service';
 export class HomeComponent implements OnInit {
   isLoading: boolean = false;
   productList: Array<Product> = [];
+  groupedProductsList: any[][] = [];
+
   constructor(private homeService: HomeService, private loaderService: LoaderService) { }
 
   ngOnInit(): void {
@@ -23,6 +25,8 @@ export class HomeComponent implements OnInit {
       next: (data: Array<Product>) => {
         this.loaderService.hide();
         this.productList = data;
+        this.groupedProductsList = this.mapCarousalProductList(this.productList, 3);
+
         console.log(data);
       },
       error: (err) => {
@@ -30,6 +34,14 @@ export class HomeComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  mapCarousalProductList(arr: any[], size: number): any[][] {
+    const result = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, i + size));
+    }
+    return result;
   }
 
 }

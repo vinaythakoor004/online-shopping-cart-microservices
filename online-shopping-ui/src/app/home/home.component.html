@@ -2,35 +2,49 @@
   <div *ngIf="isLoading" class="spinnerDiv">
     <mat-spinner></mat-spinner>
   </div>
-  <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
+  <div id="carouselProductIndicators" class="carousel carousel-dark slide divPadding" data-bs-ride="carousel" data-bs-wrap="true">
+
   <div class="carousel-inner">
-    <div class="carousel-item active ">
-      <img src="assets/img/close.svg" class="d-block w-25 m-auto" alt="Image not available..">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/img/lock.svg" class="d-block w-25 m-auto" alt="Image not available..">
-    </div>
-    <div class="carousel-item">
-      <img src="assets/img/edit.svg" class="d-block w-25 m-auto" alt="Image not available..">
-    </div>
+
+    @for (productGroup of groupedProductsList; track $index) {
+      <div
+        class="carousel-item"
+        [class.active]="$index === 0"
+      >
+      @if (productGroup.length) {
+        <div class="d-flex justify-content-center gap-3">
+          @for (product of productGroup; track $index) {
+            @if (product) {
+              <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" class="product-image openSansSemiBold">
+            }
+          }
+        </div>
+      }
+      </div>
+    }
   </div>
   <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    @for (group of groupedProductsList; track $index) {
+      <button type="button"
+              data-bs-target="#carouselProductIndicators"
+              [attr.data-bs-slide-to]="$index"
+              [class.active]="$index === 0"
+              [attr.aria-label]="'Slide ' + ($index + 1)">
+      </button>
+    }
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselProductIndicators" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselProductIndicators" data-bs-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
 
 </div>
 
-<div class="row product-container g-4">
+<div class="row product-container g-4 divPadding">
   @for (product of productList; track $index) {
     <div class="col-3">
       <mat-card class="product-card" appearance="outlined">

@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class LoaderService {
 
 private isLoading = new BehaviorSubject<boolean>(false);
+private isGloabalLoading = new BehaviorSubject<boolean>(false);
 
   show(): void {
     this.isLoading.next(true);
@@ -18,5 +19,17 @@ private isLoading = new BehaviorSubject<boolean>(false);
 
   getLoadingStatus(): Observable<boolean> {
     return this.isLoading.asObservable();
+  }
+
+  globalLoaderShow(): void {
+    this.isGloabalLoading.next(true);
+  }
+
+  globalLoaderHide(): void {
+    this.isGloabalLoading.next(false);
+  }
+
+  getGloabalLoadingStatus(): Observable<boolean> {
+    return this.isGloabalLoading.asObservable();
   }
 }

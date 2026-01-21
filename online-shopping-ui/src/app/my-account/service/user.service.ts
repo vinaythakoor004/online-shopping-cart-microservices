@@ -70,4 +70,9 @@ export class UserService {
     const url = `${this.apiUrl}/${addressId}/default`;
     return this.http.put<void>(url, {});
   }
+
+  updateUserData(user: User): Observable<User> {
+    const url = `/api/user/me`;
+    return this.http.put<User>(url, user);
+  }
 }
