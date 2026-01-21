@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Product } from '../common/model/product.model';
 import {MatCardModule} from '@angular/material/card';
 import { LoaderService } from '../common/services/loader/loader.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,10 @@ export class HomeComponent implements OnInit {
   productList: Array<Product> = [];
   groupedProductsList: any[][] = [];
 
-  constructor(private homeService: HomeService, private loaderService: LoaderService) { }
+  constructor(private homeService: HomeService, private loaderService: LoaderService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.loaderService.show();
@@ -43,5 +47,12 @@ export class HomeComponent implements OnInit {
     }
     return result;
   }
+
+  showProductDetails(product: Product): void {
+    console.log('Product Name:', product);
+    this.homeService.setSelectedProduct(product);
+    this.router.navigate(['/product', product.name]);
+  }
+
 
 }
