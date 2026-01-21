@@ -17,10 +17,14 @@ export const routes: Routes = [
           role: ['user', 'admin']
         }
       },
-      { path: 'product/:productName', component: ProductDescriptionComponent, canActivate: [loaderKeycloakGuard],
+      {
+      path: 'product/:productName', canActivate: [loaderKeycloakGuard],
         data: {
           role: ['user', 'admin']
-        }
+        },
+        loadComponent: () =>
+          import('./product-description/product-description.component')
+            .then(c => c.ProductDescriptionComponent),
       },
       { path: 'admin', component: AdminComponent, canActivate: [loaderKeycloakGuard],
         data: {

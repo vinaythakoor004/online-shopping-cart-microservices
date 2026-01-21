@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Product } from '../common/model/product.model';
 import {MatCardModule} from '@angular/material/card';
 import { LoaderService } from '../common/services/loader/loader.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,12 @@ import { LoaderService } from '../common/services/loader/loader.service';
 export class HomeComponent implements OnInit {
   isLoading: boolean = false;
   productList: Array<Product> = [];
-  constructor(private homeService: HomeService, private loaderService: LoaderService) { }
+  groupedProductsList: any[][] = [];
+
+  constructor(private homeService: HomeService, private loaderService: LoaderService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.loaderService.show();
@@ -23,6 +29,8 @@ export class HomeComponent implements OnInit {
       next: (data: Array<Product>) => {
         this.loaderService.hide();
         this.productList = data;
+        this.groupedProductsList = this.mapCarousalProductList(this.productList, 3);
+
         console.log(data);
       },
       error: (err) => {
@@ -31,5 +39,20 @@ export class HomeComponent implements OnInit {
       }
     })
   }
+
+  mapCarousalProductList(arr: any[], size: number): any[][] {
+    const result = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, i + size));
+    }
+    return result;
+  }
+
+  showProductDetails(product: Product): void {
+    console.log('Product Name:', product);
+    this.homeService.setSelectedProduct(product);
+    this.router.navigate(['/product', product.name]);
+  }
+
 
 }

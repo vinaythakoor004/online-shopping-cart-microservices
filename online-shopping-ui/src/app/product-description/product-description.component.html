@@ -1,1 +1,23 @@
-<p>product-description works!</p>
+<div class="container-fluid">
+  <img src="assets/img/arrow_back.svg" width="18" height="18" class="backImgClass" (click)="goBack()"/>
+  <div class="product-details-container">
+    <div>
+      <img [src]="selectedProduct?.imageUrl" alt="{{ selectedProduct?.name }}" class="product-image openSansSemiBold">
+      <div class="btnGroup">
+        <button class="btn btn-success btn-lg d-flex align-items-center gap-2">
+          <img src="assets/img/cart.svg" width="18" height="18" class="btnImgClass"/>
+          <span class="openSansSemiBold btnText">Add to Cart</span>
+        </button>
+        <button class="btn btn-success btn-lg d-flex align-items-center gap-2">
+          <img src="assets/img/flash.svg" width="18" height="18" class="btnImgClass"/>
+          <span class="openSansSemiBold btnText">Buy Now</span>
+        </button>
+      </div>
+    </div>
+    <div class="product-details">
+      <h1 class="openSansSemiBold"> {{ selectedProduct?.name }}</h1>
+      <p class="openSansRegular fs-5">{{ selectedProduct?.description }}</p>
+      <p class="openSansSemiBold fs-5">{{ selectedProduct?.price | currency: 'INR' }}</p>
+    </div>
+  </div>
+</div>

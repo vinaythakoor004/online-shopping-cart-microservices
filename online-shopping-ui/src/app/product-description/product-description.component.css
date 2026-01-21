@@ -1,0 +1,30 @@
+.product-details-container {
+    display: flex;
+    padding: 2rem 4rem;
+    gap: 10rem;
+}
+
+.product-image {
+  width: 24rem;
+}
+
+.btnGroup {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 2rem;
+}
+
+.btnText {
+  color: white;
+}
+
+.btnImgClass {
+  width: 2rem;
+  height: 3rem;
+}
+
+.backImgClass {
+  width: 2rem;
+  height: 1.5rem;
+  margin-left: 4rem;
+}

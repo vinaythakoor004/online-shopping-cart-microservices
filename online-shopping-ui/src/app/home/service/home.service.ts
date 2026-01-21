@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Product } from '../../common/model/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,14 @@ export class HomeService {
   private apiUrl = '/api/product';
 
   constructor(private http: HttpClient) { }
+    private selectedProduct: Product | null = null;
+    setSelectedProduct(product: Product): void {
+      this.selectedProduct = product;
+    }
+
+    getSelectedProduct(): Product | null {
+      return this.selectedProduct;
+    }
 
     getProFile(): Observable<any> {
       return this.http.get('/api/user/me');

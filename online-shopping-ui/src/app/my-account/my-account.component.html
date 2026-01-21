@@ -12,12 +12,30 @@
       @if (user.email) {
         <p class="form-label openSansSemiBold">Email : <span class="openSansRegular">{{ user.email }}</span></p>
       }
-      @if (user.gender) {
-        <p class="form-label openSansSemiBold">Gender : <span class="openSansRegular">{{ user.gender }}</span></p>
-      }
-      @if (user.mobileNumber) {
-        <p class="form-label openSansSemiBold">Mobile Number : <span class="openSansRegular">{{ user.mobileNumber }}</span></p>
-      }
+      <p class="form-label openSansSemiBold">Gender :
+        @if (isGenderEditView) {
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="checkboxTrue" value="male" [(ngModel)]="user.gender" name="gender">
+            <label class="form-check-label" for="checkboxTrue">male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="checkboxFalse" value="female" [(ngModel)]="user.gender" name="gender">
+            <label class="form-check-label" for="checkboxFalse">female</label>
+          </div>
+        } @else {
+          <span class="openSansRegular">{{ user.gender }}</span>
+          <img class="edit-address-img" src="assets/img/edit.svg" alt="edit" title="Edit Address"  (click)="showUpdateView('gender')">
+        }
+      </p>
+      <p class="form-label openSansSemiBold">Mobile No. :
+        @if (isMobileEditView) {
+          <input type="text" [(ngModel)]="user.mobileNumber" name="mobileNumber">
+        } @else {
+          <span class="openSansRegular" >{{ user.mobileNumber }}</span>
+          <img class="edit-address-img" src="assets/img/edit.svg" alt="edit" title="Edit Address"  (click)="showUpdateView('mobile')">
+        }
+      </p>
+      <button class="btn btn-primary" (click)="updateUserData(user)">Update</button>
   }
   </div>
   <div class="address-class">

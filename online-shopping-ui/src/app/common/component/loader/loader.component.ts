@@ -12,9 +12,11 @@ import { LoaderService } from '../../services/loader/loader.service';
 })
 export class LoaderComponent implements OnInit {
   isLoading$: Observable<boolean> = of(false);
+  isGloabalLoading$: Observable<boolean> = of(false);
   constructor(private loaderService: LoaderService) {}
 
   ngOnInit(): void {
     this.isLoading$ = this.loaderService.getLoadingStatus();
+    this.isGloabalLoading$ = this.loaderService.getGloabalLoadingStatus();
   }
 }

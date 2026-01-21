@@ -6,16 +6,19 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { LoaderService } from '../common/services/loader/loader.service';
 import { AlertService } from '../common/services/alert/alert.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-my-account',
-  imports: [ MatDialogModule, TranslatePipe ],
+  imports: [ MatDialogModule, TranslatePipe, FormsModule ],
   templateUrl: './my-account.component.html',
   styleUrl: './my-account.component.css',
 })
 export class MyAccountComponent implements OnInit {
   profile: User;
   readonly dialog = inject(MatDialog);
+  isMobileEditView: boolean = false;
+  isGenderEditView: boolean = false;
 
   constructor(private userService: UserService, private loaderService: LoaderService, private alertService: AlertService) {
     this.profile = this.userService.setEmptyProfile();
@@ -63,4 +66,26 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
+  updateUserData(user: User): void {
+    this.userService.updateUserData(user).subscribe({
+      next: (response) => {
+        this.alertService.openSnackBar('User data updated successfully.');
+        this.userService.setProfile(response);
+        this.profile = this.userService.getProfile();
+        this.isMobileEditView = false;
+        this.isGenderEditView = false;
+      },
+      error: (error) => {
+        this.alertService.openSnackBar('Error occurred while updating user data. Please try again.');
+      }
+    });
+  }
+
+  showUpdateView(field: string): void {
+    if (field === 'mobile') {
+      this.isMobileEditView = true;
+    } else if (field === 'gender') {
+      this.isGenderEditView = true;
+    }
+  }
 }
