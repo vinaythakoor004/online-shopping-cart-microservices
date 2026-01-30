@@ -31,7 +31,7 @@ export const routes: Routes = [
           role: ['admin']
         }
       },
-      { path: 'cart', component: CartComponent, canActivate: [loaderKeycloakGuard],
+      { path: 'viewcart', component: CartComponent, canActivate: [loaderKeycloakGuard],
         data: {
           role: ['user', 'admin']
         }

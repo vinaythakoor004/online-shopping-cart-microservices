@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Product } from '../../common/model/product.model';
 
 @Injectable({
@@ -8,6 +8,14 @@ import { Product } from '../../common/model/product.model';
 })
 export class HomeService {
   private apiUrl = '/api/product';
+  private productList: Array<Product> = [];
+  set setProductList(products: Array<Product>) {
+    this.productList = products;
+  }
+
+  get getProductList(): Array<Product> {
+    return this.productList;
+  }
 
   constructor(private http: HttpClient) { }
     private selectedProduct: Product | null = null;
@@ -24,7 +32,12 @@ export class HomeService {
     }
 
     getProductData(): Observable<any> {
-      return this.http.get(this.apiUrl);
+      return this.http.get(this.apiUrl)
+        .pipe(
+          tap((data: any) => {
+            this.productList = data;
+          }
+        ));
     }
 
     addProductDetails(data: any): Observable<any> {

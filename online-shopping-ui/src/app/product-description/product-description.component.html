@@ -4,11 +4,11 @@
     <div>
       <img [src]="selectedProduct?.imageUrl" alt="{{ selectedProduct?.name }}" class="product-image openSansSemiBold">
       <div class="btnGroup">
-        <button class="btn btn-success btn-lg d-flex align-items-center gap-2">
+        <button class="btn btn-success btn-lg d-flex align-items-center gap-2" (click)="addToCart(selectedProduct)">
           <img src="assets/img/cart.svg" width="18" height="18" class="btnImgClass"/>
           <span class="openSansSemiBold btnText">Add to Cart</span>
         </button>
-        <button class="btn btn-success btn-lg d-flex align-items-center gap-2">
+        <button class="btn btn-success btn-lg d-flex align-items-center gap-2" (click)="buyNow(selectedProduct)">
           <img src="assets/img/flash.svg" width="18" height="18" class="btnImgClass"/>
           <span class="openSansSemiBold btnText">Buy Now</span>
         </button>

@@ -16,4 +16,5 @@ public class ProductRequest {
     private String description;
     private String skuCode;
     private BigDecimal price;
+    private Integer initialQuantity;
 }

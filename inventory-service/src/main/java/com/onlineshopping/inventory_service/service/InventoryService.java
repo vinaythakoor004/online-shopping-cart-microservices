@@ -37,4 +37,56 @@ public class InventoryService {
                                         .build()).toList();
     }
 
+    @Transactional
+    public void createInventory(String skuCode, Integer quantity) {
+
+        Inventory inventory = Inventory.builder()
+                .skuCode(skuCode)
+                .quantity(quantity)
+                .build();
+
+        inventoryRepository.save(inventory);
+
+        log.info("Inventory created for skuCode {} with qty {}", skuCode, quantity);
+    }
+
+    @Transactional
+    public void addStock(String skuCode, Integer quantity) {
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        Inventory inventory = inventoryRepository.findBySkuCode(skuCode)
+                .orElseThrow(() -> new RuntimeException("Inventory not found for SKU: " + skuCode));
+
+        inventory.setQuantity(inventory.getQuantity() + quantity);
+
+        log.info("Added {} stock for SKU {}", quantity, skuCode);
+    }
+
+    @Transactional
+    public void removeStock(String skuCode, Integer quantity) {
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        Inventory inventory = inventoryRepository.findBySkuCode(skuCode)
+                .orElseThrow(() -> new RuntimeException("Inventory not found for SKU: " + skuCode));
+
+        if (inventory.getQuantity() < quantity) {
+            throw new RuntimeException("Insufficient stock for SKU: " + skuCode);
+        }
+
+        inventory.setQuantity(inventory.getQuantity() - quantity);
+
+        log.info("Removed {} stock for SKU {}", quantity, skuCode);
+    }
+
+    @Transactional
+    public void deleteBySkuCode(String skuCode) {
+        inventoryRepository.deleteBySkuCode(skuCode);
+    }
+
 }

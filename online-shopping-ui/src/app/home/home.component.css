@@ -20,6 +20,7 @@
   color: black;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .product-image {
@@ -36,4 +37,8 @@
 
 .divPadding {
   padding: 5rem 0rem;
+}
+
+.product-title {
+ cursor: pointer;
 }
