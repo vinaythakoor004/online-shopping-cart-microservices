@@ -25,19 +25,23 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loaderService.show();
-    this.homeService.getProductData().subscribe({
-      next: (data: Array<Product>) => {
-        this.loaderService.hide();
-        this.productList = data;
-        this.groupedProductsList = this.mapCarousalProductList(this.productList, 3);
-
-        console.log(data);
-      },
-      error: (err) => {
-        this.loaderService.hide();
-        console.log(err);
-      }
-    })
+    if (this.homeService.getProductList.length > 0) {
+      this.loaderService.hide();
+      this.productList = this.homeService.getProductList;
+      this.groupedProductsList = this.mapCarousalProductList(this.productList, 3);
+    } else {
+      this.homeService.getProductData().subscribe({
+        next: (data: Array<Product>) => {
+          this.loaderService.hide();
+          this.productList = data;
+          this.groupedProductsList = this.mapCarousalProductList(this.productList, 3);
+        },
+        error: (err) => {
+          this.loaderService.hide();
+          console.log(err);
+        }
+      })
+    }
   }
 
   mapCarousalProductList(arr: any[], size: number): any[][] {

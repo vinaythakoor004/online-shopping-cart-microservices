@@ -1,6 +1,7 @@
 package com.onlineshopping.product_service.service;
 
 import com.onlineshopping.product_service.Repository.ProductRepository;
+import com.onlineshopping.product_service.dto.InventoryRequest;
 import com.onlineshopping.product_service.dto.ProductRequest;
 import com.onlineshopping.product_service.dto.ProductResponse;
 import com.onlineshopping.product_service.model.Product;
@@ -16,6 +17,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -35,6 +37,7 @@ public class ProductService {
     private final MinioFileService minioFileService;
     private final String productList = "productList";
     private final String product = "product";
+    private final WebClient webClient;
 
     @CachePut(cacheNames = product, key = "#result.id")
     @CacheEvict(cacheNames = productList, key = "'all'")
@@ -49,8 +52,14 @@ public class ProductService {
                 .imageUrl(imageUrl)
                 .build();
 
-
         Product saved = productRepository.save(product);
+
+        createInventory(
+                saved.getSkuCode(),
+                productRequest.getInitialQuantity()
+        );
+        log.info("Product + Inventory created for sku {}", saved.getSkuCode());
+
         log.info("Products {} saved", product.getId());
         return mapToProductResponse(saved);
     }
@@ -136,7 +145,8 @@ public class ProductService {
                         record.get("name"),
                         record.get("description"),
                         record.get("skuCode"),
-                        new BigDecimal(record.get("price"))
+                        new BigDecimal(record.get("price")),
+                        Integer.parseInt(record.get("initialQuantity"))
                 ));
             }
             return products;
@@ -191,8 +201,23 @@ public class ProductService {
 
             productRepository.save(product);
             Product saved = productRepository.save(product);
+
+            createInventory(
+                    saved.getSkuCode(),
+                    row.getInitialQuantity()
+            );
+
             productResponse.add(mapToProductResponse(saved));
         }
         return productResponse;
+    }
+
+    public void createInventory(String skuCode, Integer quantity) {
+        webClient.post()
+                .uri("http://inventory-service/api/inventory")
+                .bodyValue(new InventoryRequest(skuCode, quantity))
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
     }
 }

@@ -22,6 +22,18 @@ export class ProductDescriptionComponent implements OnInit {
 
   goBack(): void {
     // this.homeService.setSelectedProduct();
-    this.router.navigate(['/home']);  
+    this.router.navigate(['/home']);
+  }
+
+  addToCart(product: Product | null): void {
+    if (product) {
+      this.router.navigate(['/viewcart']);
+    }
+  }
+
+  buyNow(product: Product | null): void {
+    if (product) {
+      this.router.navigate(['/product']);
+    }
   }
 }
